@@ -31,7 +31,9 @@ class GamePrefs
 	public static var ghostTapping:Bool = true; //Ghost Tapping
 	public static var downscroll:Bool = true; //Downscroll
 	public static var middlescroll:Bool = true; //Middlescroll
+	public static var hitSounds:Bool = false; //Hit Sounds
 	public static var framerate:Int = 60; //Framerate
+	public static var noteOffset:Float = 0; //Note Offset
 	public static var arrowUnderlay:Bool = false; //Arrow Underlay
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
@@ -39,31 +41,6 @@ class GamePrefs
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
 	public static var numberTest:Float = 1;
-	
-	// when adding a description, it MUST be in the same order as the variables.
-	public static var graphicsDescriptions:Array<String> =
-	[
-		// -- GRAPHICS CATEGORY --
-		"When enabled, Some background elements will disappear.\nYou can get a performance boost with this.", //Low Quality Desc
-		"When enabled, The game will run smoother, but the sprites will\nlook less smooth.", //Anti-Aliasing Desc
-		"When enabled, The background and characters will disappear.\nYou will get a huge performance boost from this.", //Optimization Desc
-		"When disabled, The FPS Counter at the top left will disappear.", //6 - Toggle FPS Counter Desc
-		"When enabled, A special effect will play when you hit a \"Sick!\" note.", //Note Splashes Desc
-		"When enabled, You can change the look of your notes in the\nNote Skin menu.", //Custom Note Skin Desc
-		"When enabled, the camera will zoom to the beat of the song.", //Camera Zooms Desc
-	];
-	
-	public static var gameplayDescriptions:Array<String> =
-	[
-		// -- GAMEPLAY CATEGORY --
-		"When enabled, The game will let you know when\nyour version is outdated.", //Toggle Outdated Warning Desc
-		"When disabled, Pressing a note that isn't there will result\nin a miss.", //Ghost Tapping Desc
-		"Moves the notes down to the bottom of the screen.\nEnabling this is up to your preference.", //Downscroll Desc
-		"Moves the notes down to the middle of the screen.\nEnabling this is up to your preference.", //Middlescroll Desc
-		"When enabled, A black background will show behind your arrows.\nThis can help with focus.", //Arrow Underlay Desc
-		"Change the opacity of the Arrow Underlay using LEFT & RIGHT.", //Underlay Opacity Desc
-		"Change how fast or slow your arrows go using LEFT & RIGHT.\n1 = The speed becomes dependent on the chart.", //Scroll Speed Desc
-	];
 	
 	public static var defaultKeys:Array<FlxKey> = [
 		A, LEFT,			//Note Left

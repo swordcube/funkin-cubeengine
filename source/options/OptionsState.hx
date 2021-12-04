@@ -35,7 +35,10 @@ class OptionsState extends MusicBeatState
 	function openSelectedSubstate(label:String) {
 		switch(label) {
 			case 'Graphics':
-				openSubState(new options.GraphicsSubState());	
+				openSubState(new options.GraphicsSubState());
+				
+			case 'Gameplay':
+				openSubState(new options.GameplaySubState());
 				
 			default:
 				openSubState(new options.UnfinishedSubState());	

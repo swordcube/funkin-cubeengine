@@ -59,7 +59,7 @@ class TitleState extends MusicBeatState
 			
 			http.onData = function (data:String)
 			{
-				updateVersion = data.split('\n')[0];
+				updateVersion = data.split('\n')[0].trim();
 				var curVersion:String = EngineStuff.engineVersion;
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
 				if(updateVersion != curVersion) {
@@ -295,7 +295,7 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
-		if (pressedEnter && !transitioning && skippedIntro)
+		if (pressedEnter && !transitioning)
 		{
 			#if !switch
 			//NGio.unlockMedal(60960);
@@ -320,7 +320,7 @@ class TitleState extends MusicBeatState
 				{
 					// Check if version is outdated
 
-					var version:String = "v" + EngineStuff.engineVersion;
+					var version:String = EngineStuff.engineVersion;
 
 					if (version.trim() != updateVersion && !OutdatedSubState.leftState)
 					{
@@ -462,7 +462,6 @@ class TitleState extends MusicBeatState
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 			skippedIntro = true;
-			titleText.animation.play('press');
 		}
 	}
 }

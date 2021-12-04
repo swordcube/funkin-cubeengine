@@ -20,7 +20,7 @@ class OutdatedSubState extends MusicBeatState
 		super.create();
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
-		var ver = "v" + EngineStuff.engineVersion;
+		var ver = EngineStuff.engineVersion;
 		var txt:FlxText = new FlxText(0, 0, FlxG.width,
 			"Your version of Cube Engine is outdated!\nYour version is "
 			+ ver

@@ -2259,6 +2259,7 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime);
 				combo += 1;
+				if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
 			}
 
 			if (note.noteData >= 0)
