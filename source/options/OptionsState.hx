@@ -40,6 +40,9 @@ class OptionsState extends MusicBeatState
 			case 'Gameplay':
 				openSubState(new options.GameplaySubState());
 				
+			case 'Controls':
+				openSubState(new options.ControlsSubState());
+				
 			default:
 				openSubState(new options.UnfinishedSubState());	
 		}
