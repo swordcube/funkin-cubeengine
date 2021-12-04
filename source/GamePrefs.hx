@@ -18,6 +18,8 @@ import Controls;
 class GamePrefs
 {
 	// -- GRAPHICS CATEGORY --
+	public static var flashingLightsWarning:Bool = true; //Flashing Lights Warning, can't be changed through normal means
+	public static var flashingLights:Bool = true; //Flashing Lights
 	public static var lowQuality:Bool = false; //Low Quality
 	public static var antialiasing:Bool = true; //Anti-Aliasing
 	public static var optimization:Bool = false; //Optimization Mode
@@ -29,8 +31,8 @@ class GamePrefs
 	// -- GAMEPLAY CATEGORY --
 	public static var toggleOutdatedWarning:Bool = true; //Toggle Outdated Warning
 	public static var ghostTapping:Bool = true; //Ghost Tapping
-	public static var downscroll:Bool = true; //Downscroll
-	public static var middlescroll:Bool = true; //Middlescroll
+	public static var downscroll:Bool = false; //Downscroll
+	public static var middlescroll:Bool = false; //Middlescroll
 	public static var hitSounds:Bool = false; //Hit Sounds
 	public static var framerate:Int = 60; //Framerate
 	public static var noteOffset:Float = 0; //Note Offset
@@ -82,6 +84,14 @@ class GamePrefs
 	{
 		//load in your save data shit!
 		// -- GRAPHICS SHIT --
+		if(FlxG.save.data.flashingLightsWarning != null) {
+			flashingLightsWarning = FlxG.save.data.flashingLightsWarning;
+		}
+		
+		if(FlxG.save.data.flashingLights != null) {
+			flashingLights = FlxG.save.data.flashingLights;
+		}
+		
 		if(FlxG.save.data.lowQuality != null) {
 			lowQuality = FlxG.save.data.lowQuality;
 		}
@@ -129,6 +139,10 @@ class GamePrefs
 			middlescroll = FlxG.save.data.middlescroll;
 		}
 		
+		if(FlxG.save.data.hitSounds != null) {
+			hitSounds = FlxG.save.data.hitSounds;
+		}
+		
 		if(FlxG.save.data.framerate != null) {
 			framerate = FlxG.save.data.framerate;
 			if(framerate > FlxG.drawFramerate) {
@@ -138,6 +152,10 @@ class GamePrefs
 				FlxG.drawFramerate = framerate;
 				FlxG.updateFramerate = framerate;
 			}
+		}
+		
+		if(FlxG.save.data.noteOffset != null) {
+			noteOffset = FlxG.save.data.noteOffset;
 		}
 		
 		if(FlxG.save.data.arrowUnderlay != null) {
@@ -159,12 +177,20 @@ class GamePrefs
 		if (FlxG.save.data.mute != null) {
 			FlxG.sound.muted = FlxG.save.data.mute;
 		}
+		
+		var save:FlxSave = new FlxSave();
+		save.bind('controls', 'ninjamuffin99');
+		if(save != null && save.data.customControls != null) {
+			reloadControls(save.data.customControls);
+		}
 	}
 	
 	public static function saveSettings()
 	{
 		//save your save data shit!
 		//-- GRAPHICS SHIT --
+		FlxG.save.data.flashingLightsWarning = flashingLightsWarning;
+		FlxG.save.data.flashingLights = flashingLights;
 		FlxG.save.data.lowQuality = lowQuality;
 		FlxG.save.data.antialiasing = antialiasing;
 		FlxG.save.data.optimization = optimization;
@@ -177,7 +203,9 @@ class GamePrefs
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.downscroll = downscroll;
 		FlxG.save.data.middlescroll = middlescroll;
+		FlxG.save.data.hitSounds = hitSounds;
 		FlxG.save.data.framerate = framerate;
+		FlxG.save.data.noteOffset = noteOffset;
 		FlxG.save.data.arrowUnderlay = arrowUnderlay;
 		FlxG.save.data.underlayOpacity = underlayOpacity;
 		FlxG.save.data.scrollSpeed = scrollSpeed;
@@ -187,10 +215,10 @@ class GamePrefs
 		
 		//save controls or something!
 		var save:FlxSave = new FlxSave();
-		save.bind('controls', 'ninjamuffin99');
-		if(save != null && save.data.customControls != null) {
-			reloadControls(save.data.customControls);
-		}
+		save.bind('controls', 'ninjamuffin99'); //Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
+		save.data.customControls = lastControls;
+		save.flush();
+		FlxG.log.add("Settings saved!");
 	}
 	
 	public static function reloadControls(newKeys:Array<FlxKey>) {

@@ -42,6 +42,7 @@ class GraphicsSubState extends MusicBeatSubstate
 	var options:Array<Dynamic> = [
 		//Slot 1 - Option Name
 		//Slot 2 - Option Description
+		['Flashing Lights', "When enabled, Flashing lights from places like menus,\nand gameplay should be gone."],
 		['Low Quality', "When enabled, Some background elements will disappear.\nYou can get a performance boost with this."],
 		['Anti-Aliasing', "When disabled, The game will run smoother, but the sprites\nwill look less smooth."],
 		['Optimization', "When enabled, The background and characters will disappear.\nYou will get a huge performance boost from this."],
@@ -176,6 +177,9 @@ class GraphicsSubState extends MusicBeatSubstate
 		if(useCheckbox) {
 			if (controls.ACCEPT && nextAccept <= 0) {
 				switch(options[curSelected][0]) {
+					case 'Flashing Lights':
+						GamePrefs.flashingLights = !GamePrefs.flashingLights;	
+			
 					case 'Low Quality':
 						GamePrefs.lowQuality = !GamePrefs.lowQuality;
 						
@@ -291,6 +295,9 @@ class GraphicsSubState extends MusicBeatSubstate
 				daValue = false;
 				switch(options[checkboxNumber[i]][0])
 				{
+					case 'Flashing Lights':
+						daValue = GamePrefs.flashingLights;
+						
 					case 'Low Quality':
 						daValue = GamePrefs.lowQuality;
 						

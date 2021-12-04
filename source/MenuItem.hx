@@ -41,9 +41,11 @@ class MenuItem extends FlxSpriteGroup
 		if (isFlashing)
 			flashingInt += 1;
 
-		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
-			week.color = 0xFF33ffff;
-		else
-			week.color = FlxColor.WHITE;
+		if(GamePrefs.flashingLights) {
+			if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
+				week.color = 0xFF33ffff;
+			else
+				week.color = FlxColor.WHITE;
+		}
 	}
 }

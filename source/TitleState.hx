@@ -115,10 +115,22 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
 		#else
-		new FlxTimer().start(1, function(tmr:FlxTimer)
-		{
-			startIntro();
-		});
+		if(FlxG.save.data.flashingLights == null && !FlashingLightsWarning.leftState) {
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			FlxG.switchState(new FlashingLightsWarning());
+		} else {
+			#if desktop
+			DiscordClient.initialize();
+			Application.current.onExit.add (function (exitCode) {
+				DiscordClient.shutdown();
+			});
+			#end
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+				startIntro();
+			});
+		}
 		#end
 
 		#if desktop
@@ -295,7 +307,7 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
-		if (pressedEnter && !transitioning)
+		if (pressedEnter && !transitioning && skippedIntro)
 		{
 			#if !switch
 			//NGio.unlockMedal(60960);
@@ -307,7 +319,7 @@ class TitleState extends MusicBeatState
 				//will be replaced lol
 			#end
 
-			titleText.animation.play('press');
+			if(GamePrefs.flashingLights) titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
@@ -324,6 +336,8 @@ class TitleState extends MusicBeatState
 
 					if (version.trim() != updateVersion && !OutdatedSubState.leftState)
 					{
+						FlxTransitionableState.skipNextTransIn = false;
+						FlxTransitionableState.skipNextTransOut = false;
 						FlxG.switchState(new OutdatedSubState());
 						trace('OLD VERSION!');
 						trace('old ver');
@@ -350,6 +364,7 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !skippedIntro)
 		{
 			skipIntro();
+			if(GamePrefs.flashingLights) titleText.animation.play('press');
 		}
 
 		super.update(elapsed);
