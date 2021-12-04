@@ -20,8 +20,8 @@ class Checkbox extends FlxSprite
 		animation.addByPrefix("checked", "checked anim0", 24, false);
 		animation.addByPrefix("no", "no", 24, false);
 
-		antialiasing = GamePrefs.globalAntialiasing;
-		setGraphicSize(Std.int(0.9 * width));
+		antialiasing = GamePrefs.antialiasing;
+		setGraphicSize(Std.int(0.5 * width));
 		updateHitbox();
 
 		daValue = checked;
@@ -29,17 +29,17 @@ class Checkbox extends FlxSprite
 		playAnim(daValue ? 'checked' : 'unchecked');
 	}
 
-	private function playAnim(name:String)
+	public function playAnim(name:String)
 	{
 		switch(name)
 		{
 			case 'checked':
 				animation.play('checked', true);
-				offset.set(0, 0);
+				offset.set(65, 70);
 
 			case 'unchecked':
 				animation.play('unchecked', true);
-				offset.set(0, 0);
+				offset.set(60, 45);
 		}
 	}
 	
@@ -55,6 +55,8 @@ class Checkbox extends FlxSprite
 			playAnim(daValue ? 'checked' : 'unchecked');
 			daValueOld = daValue;
 		}
+		
+		antialiasing = GamePrefs.antialiasing;
 		
 		super.update(elapsed);
 	}

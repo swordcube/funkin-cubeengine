@@ -20,7 +20,7 @@ class GamePrefs
 	// -- GRAPHICS CATEGORY --
 	public static var lowQuality:Bool = false; //Low Quality
 	public static var antialiasing:Bool = true; //Anti-Aliasing
-	public static var optimization:Bool = true; //Optimization Mode
+	public static var optimization:Bool = false; //Optimization Mode
 	public static var toggleFPS:Bool = true; //Toggle FPS Counter
 	public static var noteSplashes:Bool = true; //Note Splashes
 	public static var customNoteSkin:Bool = false; //Custom Note Skin
@@ -31,9 +31,14 @@ class GamePrefs
 	public static var ghostTapping:Bool = true; //Ghost Tapping
 	public static var downscroll:Bool = true; //Downscroll
 	public static var middlescroll:Bool = true; //Middlescroll
+	public static var framerate:Int = 60; //Framerate
 	public static var arrowUnderlay:Bool = false; //Arrow Underlay
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
+	
+	// -- TESTING SHIT --
+	public static var checkboxTest:Bool = false;
+	public static var numberTest:Float = 1;
 	
 	// when adding a description, it MUST be in the same order as the variables.
 	public static var graphicsDescriptions:Array<String> =
@@ -147,6 +152,17 @@ class GamePrefs
 			middlescroll = FlxG.save.data.middlescroll;
 		}
 		
+		if(FlxG.save.data.framerate != null) {
+			framerate = FlxG.save.data.framerate;
+			if(framerate > FlxG.drawFramerate) {
+				FlxG.updateFramerate = framerate;
+				FlxG.drawFramerate = framerate;
+			} else {
+				FlxG.drawFramerate = framerate;
+				FlxG.updateFramerate = framerate;
+			}
+		}
+		
 		if(FlxG.save.data.arrowUnderlay != null) {
 			arrowUnderlay = FlxG.save.data.arrowUnderlay;
 		}
@@ -166,12 +182,6 @@ class GamePrefs
 		if (FlxG.save.data.mute != null) {
 			FlxG.sound.muted = FlxG.save.data.mute;
 		}
-		
-		var save:FlxSave = new FlxSave();
-		save.bind('controls', 'ninjamuffin99');
-		if(save != null && save.data.customControls != null) {
-			reloadControls(save.data.customControls);
-		}
 	}
 	
 	public static function saveSettings()
@@ -190,12 +200,20 @@ class GamePrefs
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.downscroll = downscroll;
 		FlxG.save.data.middlescroll = middlescroll;
+		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.arrowUnderlay = arrowUnderlay;
 		FlxG.save.data.underlayOpacity = underlayOpacity;
 		FlxG.save.data.scrollSpeed = scrollSpeed;
 		
 		//save the shit!
 		FlxG.save.flush();
+		
+		//save controls or something!
+		var save:FlxSave = new FlxSave();
+		save.bind('controls', 'ninjamuffin99');
+		if(save != null && save.data.customControls != null) {
+			reloadControls(save.data.customControls);
+		}
 	}
 	
 	public static function reloadControls(newKeys:Array<FlxKey>) {

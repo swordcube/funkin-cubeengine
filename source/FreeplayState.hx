@@ -70,7 +70,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		if (StoryMenuState.weekUnlocked[1] || isDebug)
-			addWeek(['Bopeebo', 'Fresh', 'Dad-Battle'], 1, ['dad']);
+			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad']);
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
 			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
@@ -79,10 +79,10 @@ class FreeplayState extends MusicBeatState
 			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
 
 		if (StoryMenuState.weekUnlocked[4] || isDebug)
-			addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
+			addWeek(['Satin Panties', 'High', 'Milf'], 4, ['mom']);
 
 		if (StoryMenuState.weekUnlocked[5] || isDebug)
-			addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents', 'parents', 'monster']);
+			addWeek(['Cocoa', 'Eggnog', 'Winter Horrorland'], 5, ['parents', 'parents', 'monster']);
 
 		if (StoryMenuState.weekUnlocked[6] || isDebug)
 			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai-pixel', 'senpai-pixel', 'spirit-pixel']);
@@ -261,11 +261,12 @@ class FreeplayState extends MusicBeatState
 		}
 		else #end if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName.toLowerCase());
+			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
 
 			trace(poop);
 
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			PlayState.SONG = Song.loadFromJson(poop, songLowercase);
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 

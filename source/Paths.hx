@@ -13,6 +13,10 @@ import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 #end*/
 
+import flash.media.Sound;
+
+using StringTools;
+
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
@@ -135,5 +139,9 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
+	}
+	
+	inline static public function formatToSongPath(path:String) {
+		return path.toLowerCase().replace(' ', '-');
 	}
 }
