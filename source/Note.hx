@@ -43,6 +43,7 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		x += 50;
+		x += 42;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
@@ -54,7 +55,7 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
+				loadGraphic(Paths.image('pixelUI/noteskins/NOTE_assets'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -63,7 +64,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('weeb/pixelUI/arrowEnds'), true, 7, 6);
+					loadGraphic(Paths.image('pixelUI/noteskins/NOTE_assetsENDS'), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
@@ -80,7 +81,7 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				frames = Paths.getSparrowAtlas('NOTE_assets');
+				frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
 
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');
@@ -126,6 +127,14 @@ class Note extends FlxSprite
 			alpha = 0.6;
 
 			x += width / 2;
+			
+			switch (GamePrefs.downscroll)
+			{
+				case true:
+					this.flipY = true;
+				case false:
+					// do nothing bc fuck you
+			}
 
 			switch (noteData)
 			{
