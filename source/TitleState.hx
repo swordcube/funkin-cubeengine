@@ -347,11 +347,15 @@ class TitleState extends MusicBeatState
 					}
 					else
 					{
+						FlxTransitionableState.skipNextTransIn = false;
+						FlxTransitionableState.skipNextTransOut = false;
 						FlxG.switchState(new MainMenuState());
 					}
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 			} else {
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxTransitionableState.skipNextTransOut = false;
 				FlxG.switchState(new MainMenuState());
 			}
 			
@@ -364,7 +368,6 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !skippedIntro)
 		{
 			skipIntro();
-			if(GamePrefs.flashingLights) titleText.animation.play('press');
 		}
 
 		super.update(elapsed);

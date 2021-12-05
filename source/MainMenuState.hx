@@ -28,7 +28,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story_mode', 'freeplay', 'credits', 'donate', 'options'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay', 'awards', 'credits', 'donate', 'options'];
 	#else
 	var optionShit:Array<String> = ['story_mode', 'freeplay', 'options'];
 	#end
@@ -193,6 +193,10 @@ class MainMenuState extends MusicBeatState
 										FlxG.switchState(new FreeplayState());
 										trace("Entered State: Freeplay");
 										
+									case 'awards':
+										FlxG.switchState(new AwardsState());
+										trace("Entered State: Awards Menu");
+										
 									case 'credits':
 										FlxG.switchState(new FreeplayState());
 										trace("lol fuck you credits don't exist get freeplay'd");
@@ -201,6 +205,7 @@ class MainMenuState extends MusicBeatState
 										/*FlxTransitionableState.skipNextTransIn = true;
 										FlxTransitionableState.skipNextTransOut = true;*/
 										FlxG.switchState(new options.OptionsState());
+										trace("Entered State: Options Menu");
 								}
 							});
 						}
