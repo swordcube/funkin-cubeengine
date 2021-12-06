@@ -73,9 +73,9 @@ class AwardsState extends MusicBeatState
 			optionText.targetY = i;
 			grpOptions.add(optionText);
 			
-			reloadValues(i);
+			//reloadValues();
 			
-			var checkbox:AttachedAchievement = new AttachedAchievement(optionText.x - 105, optionText.y, daValue, Awards.awardsStuff[i][4], Awards.awardsStuff[i][2]);
+			var checkbox:AttachedAchievement = new AttachedAchievement(optionText.x - 105, optionText.y, false, Awards.awardsStuff[i][4], Awards.awardsStuff[i][2]);
 			checkbox.sprTracker = optionText;
 			checkboxNumber.push(i);
 			checkboxArray.push(checkbox);
@@ -111,7 +111,6 @@ class AwardsState extends MusicBeatState
 		menuBG.antialiasing = GamePrefs.antialiasing;
 		
 		if (controls.BACK) {
-			Awards.saveAwards();
 			FlxG.switchState(new MainMenuState());
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
@@ -134,7 +133,7 @@ class AwardsState extends MusicBeatState
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
 		
-		//reloadValues();
+		reloadValues();
 		super.update(elapsed);
 	}
 	
@@ -165,11 +164,13 @@ class AwardsState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 	
-	function reloadValues(funnyNumber:Int)
+	function reloadValues()
 	{
 		for (i in 0...checkboxArray.length) {
+			var checkbox:AttachedAchievement = checkboxArray[i];
+			if(checkbox != null) {
 				daValue = false;
-				switch(Awards.awardsStuff[funnyNumber][3]) //uses the tag
+				switch(Awards.awardsStuff[checkboxNumber[i]][3]) //uses the tag
 				{
 					case 'FridayNightPlay':
 						daValue = Awards.AwardFridayNight;
@@ -213,7 +214,8 @@ class AwardsState extends MusicBeatState
 					case 'MasterDebugger':
 						daValue = Awards.AwardMasterDebugger;				
 				}
-				checkboxGroup.members[i].daValue = daValue;
+				checkboxGroup.members[i].unlocked = daValue;
+			}
 		}
 	}
 }

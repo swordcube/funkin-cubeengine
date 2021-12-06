@@ -27,9 +27,9 @@ class AttachedAchievement extends FlxSprite
 		antialiasing = GamePrefs.antialiasing;
 	}
 	
-	public function playAnim(locked:Bool)
+	public function playAnim(unlockedGamering:Bool)
 	{
-		if(unlocked)
+		if(unlockedGamering)
 		{
 			loadGraphic(Paths.image('awards' + folderPath + '/award_' + imagePath));
 
@@ -42,9 +42,9 @@ class AttachedAchievement extends FlxSprite
 		if (sprTracker != null)
 			setPosition(sprTracker.x - 130, sprTracker.y + 25);
 			
-		if (daValueOld != daValue) {
-			playAnim(daValue);
-			daValueOld = daValue;
+		if (daValueOld != unlocked) {
+			playAnim(unlocked);
+			daValueOld = unlocked;
 		}
 		
 		antialiasing = GamePrefs.antialiasing;

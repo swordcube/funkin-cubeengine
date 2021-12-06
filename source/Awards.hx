@@ -13,6 +13,23 @@ using StringTools;
 
 class Awards
 {
+	// -- VARIABLES --
+	public static var AwardFridayNight:Bool = false;
+	public static var AwardWeek1:Bool = false;
+	public static var AwardWeek2:Bool = false;
+	public static var AwardWeek3:Bool = false;
+	public static var AwardWeek4:Bool = false;
+	public static var AwardWeek5:Bool = false;
+	public static var AwardWeek6:Bool = false;
+	public static var AwardGetGood:Bool = false;
+	public static var AwardDangerZone:Bool = false;
+	public static var AwardOsuManiaPlayer:Bool = false;
+	public static var AwardIsToaster:Bool = false;
+	public static var AwardDoubleSided:Bool = false;
+	public static var AwardDebugger:Bool = false;
+	public static var AwardMasterDebugger:Bool = false;
+	
+	// -- THE SHIT --
 	public static var awardsStuff:Array<Dynamic> = [
 		[
 			"Freaky on a Friday Night", // Name
@@ -112,7 +129,7 @@ class Awards
 			"Money Waster", // Name
 			"Why do you spend this much money on a PC..\nIs this a 2009 MacBook from EBay?!", // Description
 			"toasterMac", // Internal Name
-			"toaster", // Tag
+			"Toaster", // Tag
 			"/misc/toaster", // Folder Path
 		],
 		#end
@@ -159,22 +176,6 @@ class Awards
 			"/misc", // Folder Path
 		],
 	];
-	
-	// -- VARIABLES --
-	public static var AwardFridayNight:Bool = false;
-	public static var AwardWeek1:Bool = false;
-	public static var AwardWeek2:Bool = false;
-	public static var AwardWeek3:Bool = false;
-	public static var AwardWeek4:Bool = false;
-	public static var AwardWeek5:Bool = false;
-	public static var AwardWeek6:Bool = false;
-	public static var AwardGetGood:Bool = false;
-	public static var AwardDangerZone:Bool = false;
-	public static var AwardOsuManiaPlayer:Bool = false;
-	public static var AwardIsToaster:Bool = false;
-	public static var AwardDoubleSided:Bool = false;
-	public static var AwardDebugger:Bool = false;
-	public static var AwardMasterDebugger:Bool = false;
 
 	public static function loadAwards()
 	{
