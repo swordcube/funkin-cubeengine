@@ -30,8 +30,11 @@ class FreeplayState extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 	var curDifficulty:Int = 1;
+	var curSpeed:Float = 1;
 
+	var scoreBG:FlxSprite;
 	var scoreText:FlxText;
+	var speedText:FlxText;
 	var diffText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
@@ -43,6 +46,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		curPlaying = false;
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
 		for (i in 0...initSonglist.length)
@@ -68,6 +72,8 @@ class FreeplayState extends MusicBeatState
 		#if debug
 		isDebug = true;
 		#end
+
+		// when mod support comes this code will go burn in hell
 
 		if (StoryMenuState.weekUnlocked[1] || isDebug)
 			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad']);
@@ -118,11 +124,9 @@ class FreeplayState extends MusicBeatState
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		// scoreText.autoSize = false;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
 
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 102, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -131,6 +135,11 @@ class FreeplayState extends MusicBeatState
 		add(diffText);
 
 		add(scoreText);
+		
+		speedText = new FlxText(scoreText.x + 50, diffText.y + 36, 0, "", 24);
+		speedText.font = scoreText.font;
+		speedText.alignment = CENTER;
+		add(speedText);
 
 		changeSelection();
 		changeDiff();
@@ -206,12 +215,13 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
+		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, CoolUtil.boundTo(elapsed * 24, 0, 1)));
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		scoreText.text = 'PERSONAL BEST: ' + lerpScore;
+		positionHighscore();
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
@@ -220,6 +230,23 @@ class FreeplayState extends MusicBeatState
 		var shift = FlxG.keys.pressed.SHIFT;
 		var accepted = controls.ACCEPT;
 		var space = FlxG.keys.justPressed.SPACE;
+		
+		curSpeed = FlxMath.roundDecimal(curSpeed, 2);
+		
+		#if !sys
+		curSpeed = 1;
+		#end
+
+		if(curSpeed < 0.5)
+			curSpeed = 0.5;
+			
+		#if sys
+		speedText.text = "Speed: " + curSpeed + " (R+SHIFT)";
+		#else
+		speedText.text = "";
+		#end
+		
+		speedText.x = scoreText.x + (scoreText.width / 2) - (speedText.width / 2);
 
 		if (upP)
 		{
@@ -230,19 +257,67 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
-		if (controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P && !shift)
 			changeDiff(-1);
-		if (controls.UI_RIGHT_P)
+		else if (controls.UI_LEFT_P && shift)
+		{
+			curSpeed -= 0.05;
+
+			#if cpp
+			@:privateAccess
+			{
+				if(FlxG.sound.music.active && FlxG.sound.music.playing && curPlaying)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+	
+				if (vocals.playing && curPlaying)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+			}
+			#end
+		}
+			
+		if (controls.UI_RIGHT_P && !shift)
 			changeDiff(1);
+		else if (controls.UI_RIGHT_P && shift)
+		{
+			curSpeed += 0.05;
+
+			#if cpp
+			@:privateAccess
+			{
+				if(FlxG.sound.music.active && FlxG.sound.music.playing && curPlaying)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+	
+				if (vocals.playing && curPlaying)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+			}
+			#end
+		}
+
+		if(FlxG.keys.justPressed.R  && shift)
+		{
+			curSpeed = 1;
+
+			#if cpp
+			@:privateAccess
+			{
+				if(FlxG.sound.music.active && FlxG.sound.music.playing && curPlaying)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+	
+				if (vocals.playing && curPlaying)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+			}
+			#end
+		}
 
 		if (controls.BACK)
 		{
 			FlxG.switchState(new MainMenuState());
 		}
-	
+
 		#if PRELOAD_ALL
 		if(space && instPlaying != curSelected)
 		{
+			curPlaying = true;
 			destroyFreeplayVocals();
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
@@ -258,6 +333,17 @@ class FreeplayState extends MusicBeatState
 			vocals.looped = true;
 			vocals.volume = 0.7;
 			instPlaying = curSelected;
+			
+			#if cpp
+			@:privateAccess
+			{
+				if(FlxG.sound.music.active && FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+	
+				if(vocals.active && vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+			}
+			#end
 		}
 		else #end if (accepted)
 		{
@@ -269,6 +355,7 @@ class FreeplayState extends MusicBeatState
 			PlayState.SONG = Song.loadFromJson(poop, songLowercase);
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
+			PlayState.songMultiplier = curSpeed;
 
 			PlayState.storyWeek = songs[curSelected].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
@@ -312,6 +399,11 @@ class FreeplayState extends MusicBeatState
 			case 2:
 				diffText.text = "HARD";
 		}
+		
+		var funnyDiffTextGaming:String = diffText.text;
+		
+		diffText.text = '< ' + funnyDiffTextGaming + ' >';
+		positionHighscore();
 	}
 
 	function changeSelection(change:Int = 0)
@@ -360,6 +452,15 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
+	
+	private function positionHighscore() {
+		scoreText.x = FlxG.width - scoreText.width - 6;
+
+		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
+		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
+		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
+		diffText.x -= diffText.width / 2;
 	}
 }
 

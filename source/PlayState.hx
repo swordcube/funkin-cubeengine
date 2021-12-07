@@ -84,6 +84,9 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	
+	public static var songMultiplier:Float = 1;
+	public static var previousScrollSpeedLmao:Float = 0;
 
 	private var vocals:FlxSound;
 
@@ -201,9 +204,27 @@ class PlayState extends MusicBeatState
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
+			
 
-		Conductor.mapBPMChanges(SONG);
-		Conductor.changeBPM(SONG.bpm);
+		#if !sys
+		songMultiplier = 1;
+		#end
+
+		if(songMultiplier < 0.5)
+			songMultiplier = 0.5;
+
+		Conductor.mapBPMChanges(SONG, songMultiplier);
+		Conductor.changeBPM(SONG.bpm, songMultiplier);
+		
+		previousScrollSpeedLmao = SONG.speed;
+
+		SONG.speed /= songMultiplier;
+
+		if(SONG.speed < 1)
+			SONG.speed = 1;
+
+		Conductor.recalculateStuff(songMultiplier);
+		Conductor.safeZoneOffset *= songMultiplier;
 
 		switch (SONG.song.toLowerCase())
 		{
@@ -1110,16 +1131,20 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 			FlxG.sound.playMusic(Paths.inst(Paths.formatToSongPath(PlayState.SONG.song)), 1, false);
-		FlxG.sound.music.onComplete = finishSong;
+		//FlxG.sound.music.onComplete = finishSong;
 		vocals.play();
 
 		#if desktop
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
+		
+		Conductor.recalculateStuff(songMultiplier);
 
 		// Updating Discord Rich Presence (with Time Left)
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength);
+		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength / songMultiplier);
 		#end
+		
+		resyncVocals();
 	}
 
 	var debugNum:Int = 0;
@@ -1129,7 +1154,7 @@ class PlayState extends MusicBeatState
 		// FlxG.log.add(ChartParser.parse());
 
 		var songData = SONG;
-		Conductor.changeBPM(songData.bpm);
+		Conductor.changeBPM(songData.bpm, songMultiplier);
 
 		curSong = songData.song;
 
@@ -1154,6 +1179,7 @@ class PlayState extends MusicBeatState
 		for (section in noteData)
 		{
 			var coolSection:Int = Std.int(section.lengthInSteps / 4);
+			Conductor.recalculateStuff(songMultiplier);
 
 			for (songNotes in section.sectionNotes)
 			{
@@ -1367,7 +1393,7 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer.finished)
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, ((songLength - Conductor.songPosition) / songMultiplier >= 1 ? (songLength - Conductor.songPosition) / songMultiplier : 1));
 			}
 			else
 			{
@@ -1412,12 +1438,31 @@ class PlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		vocals.pause();
+		trace("SONG POS: " + Conductor.songPosition + " | Musice: " + FlxG.sound.music.time + " / " + FlxG.sound.music.length);
 
-		FlxG.sound.music.play();
-		Conductor.songPosition = FlxG.sound.music.time;
+		vocals.pause();
+		FlxG.sound.music.pause();
+
+		/*if(FlxG.sound.music.time >= FlxG.sound.music.length)
+			Conductor.songPosition = FlxG.sound.music.length;
+		else
+			Conductor.songPosition = FlxG.sound.music.time;*/
+
+		FlxG.sound.music.time = Conductor.songPosition;
 		vocals.time = Conductor.songPosition;
+		
+		FlxG.sound.music.play();
 		vocals.play();
+
+		#if cpp
+		@:privateAccess
+		{
+			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+
+			if (vocals.playing)
+				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+		}
+		#end
 	}
 
 	private var paused:Bool = false;
@@ -1502,6 +1547,21 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+		
+		if (generatedMusic)
+		{
+			if (startedCountdown && canPause && !endingSong)
+			{
+				// Song ends abruptly on slow rate even with second condition being deleted, 
+				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
+				// so no reason to delete it at all
+				if (FlxG.sound.music.length - Conductor.songPosition <= 20)
+				{
+					//time = FlxG.sound.music.length;
+					finishSong();
+				}
+			}
+		}
 
 		accuracyNum = accuracy * 100;
 		accuracyText = Math.floor(accuracyNum * 100) / 100 + '%';
@@ -1546,9 +1606,9 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, 0.09 / (openfl.Lib.current.stage.frameRate / 120))));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, 0.09 / (openfl.Lib.current.stage.frameRate / 120))));
-
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, 0.09 / (openfl.Lib.current.stage.frameRate / 120) * songMultiplier)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, 0.09 / (openfl.Lib.current.stage.frameRate / 120) * songMultiplier)));
+		
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
@@ -1602,7 +1662,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			// Conductor.songPosition = FlxG.sound.music.time;
-			Conductor.songPosition += FlxG.elapsed * 1000;
+			Conductor.songPosition += (FlxG.elapsed * 1000) * songMultiplier;
 
 			if (!paused)
 			{
@@ -1894,9 +1954,6 @@ class PlayState extends MusicBeatState
 	{
 		var finishCallback:Void->Void = endSong; //In case you want to change it in a specific song.
 
-		FlxG.sound.music.volume = 0;
-		vocals.volume = 0;
-		vocals.pause();
 		if(GamePrefs.noteOffset <= 0) {
 			finishCallback();
 		} else {
@@ -1911,79 +1968,87 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		if (SONG.validScore)
-		{
-			#if !switch
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
-			#end
-		}
-
-		if (isStoryMode)
-		{
-			campaignScore += songScore;
-
-			storyPlaylist.remove(storyPlaylist[0]);
-
-			if (storyPlaylist.length <= 0)
+		
+		//if(FlxG.state == instance)
+		//{
+			if (SONG.validScore)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
-				transIn = FlxTransitionableState.defaultTransIn;
-				transOut = FlxTransitionableState.defaultTransOut;
-
-				FlxG.switchState(new StoryMenuState());
-
-				// if ()
-				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
-
-				if (SONG.validScore)
-				{
-					//NGio.unlockMedal(60961);
-					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+				#if !switch
+				if(songMultiplier >= 1) {
+					Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 				}
+				#end
+			}
 
-				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
-				FlxG.save.flush();
+			if (isStoryMode)
+			{
+				campaignScore += songScore;
+
+				storyPlaylist.remove(storyPlaylist[0]);
+
+				if (storyPlaylist.length <= 0)
+				{
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+
+					transIn = FlxTransitionableState.defaultTransIn;
+					transOut = FlxTransitionableState.defaultTransOut;
+
+					FlxG.switchState(new StoryMenuState());
+
+					// if ()
+					StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
+
+					if (SONG.validScore)
+					{
+						//NGio.unlockMedal(60961);
+						if(songMultiplier >= 1) {
+							Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+						}
+					}
+
+					FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
+					FlxG.save.flush();
+				}
+				else
+				{
+					var difficulty:String = "";
+
+					if (storyDifficulty == 0)
+						difficulty = '-easy';
+
+					if (storyDifficulty == 2)
+						difficulty = '-hard';
+
+					trace('LOADING NEXT SONG');
+					trace(Paths.formatToSongPath(PlayState.storyPlaylist[0].toLowerCase()) + difficulty);
+
+					if (SONG.song.toLowerCase() == 'eggnog')
+					{
+						var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+							-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+						blackShit.scrollFactor.set();
+						add(blackShit);
+						camHUD.visible = false;
+
+						FlxG.sound.play(Paths.sound('Lights_Shut_off'));
+					}
+
+					FlxTransitionableState.skipNextTransIn = true;
+					FlxTransitionableState.skipNextTransOut = true;
+					prevCamFollow = camFollow;
+
+					PlayState.SONG = Song.loadFromJson(Paths.formatToSongPath(PlayState.storyPlaylist[0].toLowerCase()) + difficulty, Paths.formatToSongPath(PlayState.storyPlaylist[0]));
+					FlxG.sound.music.stop();
+
+					LoadingState.loadAndSwitchState(new PlayState());
+				}
 			}
 			else
 			{
-				var difficulty:String = "";
-
-				if (storyDifficulty == 0)
-					difficulty = '-easy';
-
-				if (storyDifficulty == 2)
-					difficulty = '-hard';
-
-				trace('LOADING NEXT SONG');
-				trace(Paths.formatToSongPath(PlayState.storyPlaylist[0].toLowerCase()) + difficulty);
-
-				if (SONG.song.toLowerCase() == 'eggnog')
-				{
-					var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
-						-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-					blackShit.scrollFactor.set();
-					add(blackShit);
-					camHUD.visible = false;
-
-					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
-				}
-
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-				prevCamFollow = camFollow;
-
-				PlayState.SONG = Song.loadFromJson(Paths.formatToSongPath(PlayState.storyPlaylist[0].toLowerCase()) + difficulty, Paths.formatToSongPath(PlayState.storyPlaylist[0]));
-				FlxG.sound.music.stop();
-
-				LoadingState.loadAndSwitchState(new PlayState());
+				trace('WENT BACK TO FREEPLAY??');
+				FlxG.switchState(new FreeplayState());
 			}
-		}
-		else
-		{
-			trace('WENT BACK TO FREEPLAY??');
-			FlxG.switchState(new FreeplayState());
-		}
+		//}
 	}
 
 	var endingSong:Bool = false;
@@ -2571,10 +2636,11 @@ class PlayState extends MusicBeatState
 	override function stepHit()
 	{
 		super.stepHit();
-		if (FlxG.sound.music.time > Conductor.songPosition + 20 || FlxG.sound.music.time < Conductor.songPosition - 20)
-		{
+
+		var gamerValue = 20 * songMultiplier;
+		
+		if (FlxG.sound.music.time > Conductor.songPosition + gamerValue || FlxG.sound.music.time < Conductor.songPosition - gamerValue || FlxG.sound.music.time < 500 && (FlxG.sound.music.time > Conductor.songPosition + 5 || FlxG.sound.music.time < Conductor.songPosition - 5))
 			resyncVocals();
-		}
 
 		if (dad.curCharacter == 'spooky' && curStep % 4 == 2)
 		{
