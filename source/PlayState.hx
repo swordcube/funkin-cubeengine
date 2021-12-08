@@ -1262,7 +1262,7 @@ class PlayState extends MusicBeatState
 			var babyArrow:FlxSprite = new FlxSprite(42, strumLine.y);
 
 			if (GamePrefs.middlescroll) {
-				babyArrow.x -= 350;
+				babyArrow.x -= 320;
 			}
 			switch (curStage)
 			{
@@ -2062,7 +2062,7 @@ class PlayState extends MusicBeatState
 
 	var endingSong:Bool = false;
 
-	private function popUpScore(strumtime:Float):Void
+	private function popUpScore(strumtime:Float, note:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		// boyfriend.playAnim('hey');
@@ -2102,6 +2102,13 @@ class PlayState extends MusicBeatState
 		if(daRating == 'good') goods += 1;
 		if(daRating == 'bad') bads += 1;
 		if(daRating == 'shit') shits += 1;
+		
+		if(daRating == 'sick' && GamePrefs.noteSplashes)
+		{
+			var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
+			funniSplash.cameras = [camHUD];
+			add(funniSplash);
+		}
 
 		songScore += score;
 		songHits += 1;
@@ -2507,11 +2514,8 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 			{
-				popUpScore(note.strumTime);
+				popUpScore(note.strumTime, note);
 				combo += 1;
-				var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
-				funniSplash.cameras = [camHUD];
-				add(funniSplash);
 				if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
 			}
 
