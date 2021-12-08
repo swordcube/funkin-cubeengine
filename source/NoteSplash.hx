@@ -31,7 +31,7 @@ class NoteSplash extends FlxSprite
 		if(textureLoaded != texture) {
 			loadAnims(texture);
 		}
-		offset.set(10, 10);
+		offset.set(-10, -10);
 
 		var animNum:Int = FlxG.random.int(1, 2);
 		animation.play('note' + note + '-' + animNum, true);

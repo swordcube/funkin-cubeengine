@@ -212,7 +212,10 @@ class AwardsState extends MusicBeatState
 						daValue = Awards.AwardDebugger;
 						
 					case 'MasterDebugger':
-						daValue = Awards.AwardMasterDebugger;				
+						daValue = Awards.AwardMasterDebugger;
+						
+					case 'IPAddress':
+						daValue = Awards.AwardIPAddress;			
 				}
 				checkboxGroup.members[i].unlocked = daValue;
 			}

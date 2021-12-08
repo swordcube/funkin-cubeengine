@@ -28,6 +28,7 @@ class Awards
 	public static var AwardDoubleSided:Bool = false;
 	public static var AwardDebugger:Bool = false;
 	public static var AwardMasterDebugger:Bool = false;
+	public static var AwardIPAddress:Bool = false;
 	
 	// -- THE SHIT --
 	public static var awardsStuff:Array<Dynamic> = [
@@ -37,6 +38,7 @@ class Awards
 			"FridayNightPlay", // Internal Name
 			"FridayNightPlay", // Tag
 			"/misc", // Folder Path
+			true, // Hidden achievement
 		],
 
 		[
@@ -45,6 +47,7 @@ class Awards
 			"Week1", // Internal Name
 			"Week1", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -53,6 +56,7 @@ class Awards
 			"Week2", // Internal Name
 			"Week2", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -61,6 +65,7 @@ class Awards
 			"Week3", // Internal Name
 			"Week3", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -69,6 +74,7 @@ class Awards
 			"Week4", // Internal Name
 			"Week4", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -77,6 +83,7 @@ class Awards
 			"Week5", // Internal Name
 			"Week5", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -85,6 +92,7 @@ class Awards
 			"Week6", // Internal Name
 			"Week6", // Tag
 			"/weeks", // Folder Path
+			false, // Hidden achievement
 		],	
 		
 		[
@@ -93,6 +101,7 @@ class Awards
 			"GetGood", // Internal Name
 			"GetGood", // Tag
 			"/misc", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -101,6 +110,7 @@ class Awards
 			"DangerZone", // Internal Name
 			"DangerZone", // Tag
 			"/misc", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -109,6 +119,7 @@ class Awards
 			"OsuManiaPlayer", // Internal Name
 			"OsuManiaPlayer", // Tag
 			"/misc", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		// BULLSHIT SPECIFIC TO WHATEVER OS YOU'RE USING I THINK IDFK WHAT I'M DOING
@@ -121,6 +132,7 @@ class Awards
 			"toasterWindows", // Internal Name
 			"Toaster", // Tag
 			"/misc/toaster", // Folder Path
+			false, // Hidden achievement
 		],
 		#end
 		
@@ -131,6 +143,7 @@ class Awards
 			"toasterMac", // Internal Name
 			"Toaster", // Tag
 			"/misc/toaster", // Folder Path
+			false, // Hidden achievement
 		],
 		#end
 		
@@ -141,6 +154,7 @@ class Awards
 			"toasterLinux", // Internal Name
 			"Toaster", // Tag
 			"/misc/toaster", // Folder Path
+			false, // Hidden achievement
 		],
 		#end
 		
@@ -158,6 +172,7 @@ class Awards
 			"DoubleSided", // Internal Name
 			"DoubleSided", // Tag
 			"/misc", // Folder Path
+			false, // Hidden achievement
 		],
 		
 		[
@@ -166,6 +181,7 @@ class Awards
 			"Debugger", // Internal Name
 			"Debugger", // Tag
 			"/misc", // Folder Path
+			true, // Hidden achievement
 		],
 		
 		[
@@ -174,6 +190,16 @@ class Awards
 			"MasterDebugger", // Internal Name
 			"MasterDebugger", // Tag
 			"/misc", // Folder Path
+			true, // Hidden achievement
+		],
+		
+		[
+			"One small issue...", // Name
+			"127.0.0.1\ni have ur ip adress be scared", // Description
+			"IPAddress", // Internal Name
+			"IPAddress", // Tag
+			"/misc", // Folder Path
+			true, // Hidden achievement
 		],
 	];
 

@@ -117,6 +117,10 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	public var healthBar:FlxBar;
+	var songPercent:Float = 0;
+
+	private var timeBarBG:AttachedSprite;
+	public var timeBar:FlxBar;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -154,6 +158,7 @@ class PlayState extends MusicBeatState
 	var ghostMisses:Int = 0;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
+	var timeTxt:FlxText;
 	var healthTxt:FlxText;
 	
 	//rating shit
@@ -197,6 +202,10 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camOther);
+		
+		var funniSplashCache:NoteSplash = new NoteSplash(100, 100, 0);
+		funniSplashCache.cameras = [camOther];
+		add(funniSplashCache);
 
 		FlxCamera.defaultCameras = [camGame];
 
@@ -784,7 +793,17 @@ class PlayState extends MusicBeatState
 			strumLine.y = FlxG.height - 150;
 		
 		strumLine.scrollFactor.set();
+		
+		timeTxt = new FlxText(42 + (FlxG.width / 2) - 248, 20, 400, "", 24);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		timeTxt.alpha = 0;
+		timeTxt.borderSize = 2;
+		timeTxt.visible = GamePrefs.songTimeBar;
+		if(GamePrefs.downscroll) timeTxt.y = FlxG.height - 45;
 
+		add(timeTxt);
+		
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
 		add(strumLineNotes);
 
@@ -862,6 +881,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		timeTxt.cameras = [camHUD];
 		healthTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
@@ -1138,6 +1158,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
+		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		
 		Conductor.recalculateStuff(songMultiplier);
 
@@ -1685,6 +1706,20 @@ class PlayState extends MusicBeatState
 					Conductor.lastSongPos = Conductor.songPosition;
 					// Conductor.songPosition += FlxG.elapsed * 1000;
 					// trace('MISSED FRAME');
+				}
+				
+				if(GamePrefs.songTimeBar) {
+					var curTime:Float = FlxG.sound.music.time - GamePrefs.noteOffset;
+					if(curTime < 0) curTime = 0;
+					songPercent = (curTime / songLength);
+
+					var secondsTotal:Int = Math.floor((songLength - curTime) / 1000);
+					if(secondsTotal < 0) secondsTotal = 0;
+
+					var minutesRemaining:Int = Math.floor(secondsTotal / 60);
+					var secondsRemaining:String = '' + secondsTotal % 60;
+					if(secondsRemaining.length < 2) secondsRemaining = '0' + secondsRemaining; //Dunno how to make it display a zero first in Haxe lol
+					timeTxt.text = SONG.song + ' - ' + storyDifficultyText + ' | ' + minutesRemaining + ':' + secondsRemaining;
 				}
 			}
 
