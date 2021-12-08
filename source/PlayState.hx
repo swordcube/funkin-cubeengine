@@ -47,6 +47,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;
 import openfl.media.Sound;
 import flixel.group.FlxSpriteGroup;
+import Awards;
 import NoteSplash;
 
 #if sys
@@ -117,6 +118,10 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	public var healthBar:FlxBar;
+	var songPercent:Float = 0;
+
+	private var timeBarBG:AttachedSprite;
+	public var timeBar:FlxBar;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -154,6 +159,7 @@ class PlayState extends MusicBeatState
 	var ghostMisses:Int = 0;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
+	var timeTxt:FlxText;
 	var healthTxt:FlxText;
 	
 	//rating shit
@@ -173,14 +179,12 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 
-	#if desktop
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
 	var songLength:Float = 0;
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
-	#end
 
 	override public function create()
 	{
@@ -197,6 +201,10 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camOther);
+		
+		var funniSplashCache:NoteSplash = new NoteSplash(100, 100, 0);
+		funniSplashCache.cameras = [camOther];
+		add(funniSplashCache);
 
 		FlxCamera.defaultCameras = [camGame];
 
@@ -254,7 +262,6 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 		}
 
-		#if desktop
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
 		{
@@ -291,7 +298,8 @@ class PlayState extends MusicBeatState
 
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + detailsText;
-		
+
+		#if desktop
 		// Updating Discord Rich Presence.
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 		#end
@@ -784,7 +792,17 @@ class PlayState extends MusicBeatState
 			strumLine.y = FlxG.height - 150;
 		
 		strumLine.scrollFactor.set();
+		
+		timeTxt = new FlxText(42 + (FlxG.width / 2) - 248, 20, 400, "", 24);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		timeTxt.alpha = 0;
+		timeTxt.borderSize = 2;
+		timeTxt.visible = GamePrefs.songTimeBar;
+		if(GamePrefs.downscroll) timeTxt.y = FlxG.height - 45;
 
+		add(timeTxt);
+		
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
 		add(strumLineNotes);
 
@@ -862,6 +880,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		timeTxt.cameras = [camHUD];
 		healthTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
@@ -1135,12 +1154,13 @@ class PlayState extends MusicBeatState
 		//FlxG.sound.music.onComplete = finishSong;
 		vocals.play();
 
-		#if desktop
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
+		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		
 		Conductor.recalculateStuff(songMultiplier);
 
+		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength / songMultiplier);
 		#end
@@ -1262,7 +1282,7 @@ class PlayState extends MusicBeatState
 			var babyArrow:FlxSprite = new FlxSprite(42, strumLine.y);
 
 			if (GamePrefs.middlescroll) {
-				babyArrow.x -= 350;
+				babyArrow.x -= 320;
 			}
 			switch (curStage)
 			{
@@ -1686,6 +1706,20 @@ class PlayState extends MusicBeatState
 					// Conductor.songPosition += FlxG.elapsed * 1000;
 					// trace('MISSED FRAME');
 				}
+				
+				if(GamePrefs.songTimeBar) {
+					var curTime:Float = FlxG.sound.music.time - GamePrefs.noteOffset;
+					if(curTime < 0) curTime = 0;
+					songPercent = (curTime / songLength);
+
+					var secondsTotal:Int = Math.floor((songLength - curTime) / 1000);
+					if(secondsTotal < 0) secondsTotal = 0;
+
+					var minutesRemaining:Int = Math.floor(secondsTotal / 60);
+					var secondsRemaining:String = '' + secondsTotal % 60;
+					if(secondsRemaining.length < 2) secondsRemaining = '0' + secondsRemaining; //Dunno how to make it display a zero first in Haxe lol
+					timeTxt.text = SONG.song + ' - ' + storyDifficultyText + ' | ' + minutesRemaining + ':' + secondsRemaining;
+				}
 			}
 
 			// Conductor.lastSongPos = FlxG.sound.music.time;
@@ -1963,6 +1997,9 @@ class PlayState extends MusicBeatState
 	{
 		var finishCallback:Void->Void = endSong; //In case you want to change it in a specific song.
 
+		canPause = false;
+		FlxG.sound.music.volume = 0;
+		vocals.volume = 0;
 		if(GamePrefs.noteOffset <= 0) {
 			finishCallback();
 		} else {
@@ -2062,7 +2099,7 @@ class PlayState extends MusicBeatState
 
 	var endingSong:Bool = false;
 
-	private function popUpScore(strumtime:Float):Void
+	private function popUpScore(strumtime:Float, note:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		// boyfriend.playAnim('hey');
@@ -2102,6 +2139,13 @@ class PlayState extends MusicBeatState
 		if(daRating == 'good') goods += 1;
 		if(daRating == 'bad') bads += 1;
 		if(daRating == 'shit') shits += 1;
+		
+		if(daRating == 'sick' && GamePrefs.noteSplashes)
+		{
+			var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
+			funniSplash.cameras = [camHUD];
+			add(funniSplash);
+		}
 
 		songScore += score;
 		songHits += 1;
@@ -2507,11 +2551,8 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 			{
-				popUpScore(note.strumTime);
+				popUpScore(note.strumTime, note);
 				combo += 1;
-				var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
-				funniSplash.cameras = [camHUD];
-				add(funniSplash);
 				if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
 			}
 

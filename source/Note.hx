@@ -45,7 +45,7 @@ class Note extends FlxSprite
 		x += 50;
 		x += 42;
 		if (GamePrefs.middlescroll) {
-			x -= 350;
+			x -= 320;
 			if (!isPlayer) {
 				x = 10000000; //just making sure it is offscreen
 			}

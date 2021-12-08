@@ -47,6 +47,7 @@ class GameplaySubState extends MusicBeatSubstate
 		['Downscroll', "Moves the notes down to the bottom of the screen.\nEnabling this is up to your preference."],
 		['Middlescroll', "Moves the notes to the the middle of the screen.\nEnabling this is up to your preference."],
 		['Hit Sounds', "When enabled, a sound will play when you hit a note."],
+		['Song Time Bar', "When enabled, a bar at the top or bottom of the screen\nwill show with the time left of the current song."],
 		['Framerate', "Changes how fast or slow the game itself runs."],
 		['Note Offset', "Changes how early or late your notes appear."],
 		['Arrow Underlay', "When enabled, A black background will show behind your arrows.\nThis can help with focus."],
@@ -206,6 +207,9 @@ class GameplaySubState extends MusicBeatSubstate
 					// underlay opacity would be here but isn't because it isn't a checkbox.
 				
 					// scroll speed would be here but isn't because it isn't a checkbox.
+					
+					case 'Song Time Bar':
+						GamePrefs.songTimeBar = !GamePrefs.songTimeBar;
 						
 					case 'checkbox test':
 						GamePrefs.checkboxTest = !GamePrefs.checkboxTest;
@@ -340,6 +344,9 @@ class GameplaySubState extends MusicBeatSubstate
 						
 					case 'Arrow Underlay':
 						daValue = GamePrefs.arrowUnderlay;
+						
+					case 'Song Time Bar':
+						daValue = GamePrefs.songTimeBar;
 						
 					case 'checkbox test':
 						daValue = GamePrefs.checkboxTest;

@@ -39,6 +39,7 @@ class GamePrefs
 	public static var arrowUnderlay:Bool = false; //Arrow Underlay
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
+	public static var songTimeBar:Bool = false; //Song Time Bar
 	
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
@@ -170,6 +171,10 @@ class GamePrefs
 			scrollSpeed = FlxG.save.data.scrollSpeed;
 		}	
 		
+		if(FlxG.save.data.songTimeBar != null) {
+			songTimeBar = FlxG.save.data.songTimeBar;
+		}
+		
 		// load volume lol
 		if(FlxG.save.data.volume != null) {
 			FlxG.sound.volume = FlxG.save.data.volume;
@@ -209,6 +214,7 @@ class GamePrefs
 		FlxG.save.data.arrowUnderlay = arrowUnderlay;
 		FlxG.save.data.underlayOpacity = underlayOpacity;
 		FlxG.save.data.scrollSpeed = scrollSpeed;
+		FlxG.save.data.songTimeBar = songTimeBar;
 		
 		//save the shit!
 		FlxG.save.flush();
