@@ -14,247 +14,59 @@ using StringTools;
 class Awards
 {
 	// -- VARIABLES --
-	public static var AwardFridayNight:Bool = false;
-	public static var AwardWeek1:Bool = false;
-	public static var AwardWeek2:Bool = false;
-	public static var AwardWeek3:Bool = false;
-	public static var AwardWeek4:Bool = false;
-	public static var AwardWeek5:Bool = false;
-	public static var AwardWeek6:Bool = false;
-	public static var AwardGetGood:Bool = false;
-	public static var AwardDangerZone:Bool = false;
-	public static var AwardOsuManiaPlayer:Bool = false;
-	public static var AwardIsToaster:Bool = false;
-	public static var AwardDoubleSided:Bool = false;
-	public static var AwardDebugger:Bool = false;
-	public static var AwardMasterDebugger:Bool = false;
+	public static var awardsUnlocked = [
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false
+	];
 	
 	// -- THE SHIT --
 	public static var awardsStuff:Array<Dynamic> = [
-		[
-			"Freaky on a Friday Night", // Name
-			"Play the game on a friday night.", // Description
-			"FridayNightPlay", // Internal Name
-			"FridayNightPlay", // Tag
-			"/misc", // Folder Path
-		],
-
-		[
-			"Beginners Luck", // Name
-			"Beat Week 1 with no misses.", // Description
-			"Week1", // Internal Name
-			"Week1", // Tag
-			"/weeks", // Folder Path
-		],
-		
-		[
-			"Trick or Treat", // Name
-			"Beat Week 2 with no misses.", // Description
-			"Week2", // Internal Name
-			"Week2", // Tag
-			"/weeks", // Folder Path
-		],
-		
-		[
-			"Bullet Dodger", // Name
-			"Beat Week 3 with no misses.", // Description
-			"Week3", // Internal Name
-			"Week3", // Tag
-			"/weeks", // Folder Path
-		],
-		
-		[
-			"Lady Killer", // Name
-			"Beat Week 4 with no misses.", // Description
-			"Week4", // Internal Name
-			"Week4", // Tag
-			"/weeks", // Folder Path
-		],
-		
-		[
-			"Christmas Morning", // Name
-			"Beat Week 5 with no misses.", // Description
-			"Week5", // Internal Name
-			"Week5", // Tag
-			"/weeks", // Folder Path
-		],
-		
-		[
-			"Highscore", // Name
-			"Beat Week 6 with no misses.", // Description
-			"Week6", // Internal Name
-			"Week6", // Tag
-			"/weeks", // Folder Path
-		],	
-		
-		[
-			"Get Good", // Name
-			"Beat a song with accuracy lower than 20%.", // Description
-			"GetGood", // Internal Name
-			"GetGood", // Tag
-			"/misc", // Folder Path
-		],
-		
-		[
-			"Danger Zone", // Name
-			"Beat a song with health lower than 20%.", // Description
-			"DangerZone", // Internal Name
-			"DangerZone", // Tag
-			"/misc", // Folder Path
-		],
-		
-		[
-			"osu!mania player", // Name
-			"Beat a song with 100% accuracy.", // Description
-			"OsuManiaPlayer", // Internal Name
-			"OsuManiaPlayer", // Tag
-			"/misc", // Folder Path
-		],
-		
-		// BULLSHIT SPECIFIC TO WHATEVER OS YOU'RE USING I THINK IDFK WHAT I'M DOING
-		// TOASTER AWARD YEYE
-		
+		["Freaky on a Friday Night", "Play the game on a friday night.", "FridayNightPlay", "FridayNightPlay", "/misc"],
+		["Beginners Luck", "Beat Week 1 with no misses.", "Week1", "Week1", "/weeks"],
+		["Trick or Treat", "Beat Week 2 with no misses.", "Week2", "Week2", "/weeks"],
+		["Bullet Dodger", "Beat Week 3 with no misses.", "Week3", "Week3", "/weeks"],
+		["Lady Killer", "Beat Week 4 with no misses.", "Week4", "Week4", "/weeks"],
+		["Christmas Morning", "Beat Week 5 with no misses.", "Week5", "Week5", "/weeks"],
+		["Highscore", "Beat Week 6 with no misses.", "Week6", "Week6", "/weeks"],	
+		["Get Good", "Beat a song with accuracy lower than 20%.", "GetGood", "GetGood", "/misc"],
+		["Danger Zone", "Beat a song with health lower than 20%.", "DangerZone", "DangerZone", "/misc"],
+		["osu!mania player", "Beat a song with 100% accuracy.", "OsuManiaPlayer", "OsuManiaPlayer", "/misc"],
+		["Double Sided", "Beat a song by only pressing 2 of your keybinds.", "DoubleSided", "DoubleSided", "/misc"],
+		["Debugger", "Beat \"Test\" from the chart editor.", "Debugger", "Debugger", "/misc"],
+		["Master Debugger", "Beat \"Test\" from the chart editor and get no misses.", "MasterDebugger", "MasterDebugger", "/misc"],
 		#if windows
-		[
-			"Bloatware", // Name
-			"Why does Windows come with so much bloatware??\nThe speed is unbearable..", // Description
-			"toasterWindows", // Internal Name
-			"Toaster", // Tag
-			"/misc/toaster", // Folder Path
-		],
+		["Bloatware", "Why does Windows come with so much bloatware??\nThe speed is unbearable..", "toasterWindows", "Toaster", "/misc/toaster"]
 		#end
-		
 		#if mac
-		[
-			"Money Waster", // Name
-			"Why do you spend this much money on a PC..\nIs this a 2009 MacBook from EBay?!", // Description
-			"toasterMac", // Internal Name
-			"Toaster", // Tag
-			"/misc/toaster", // Folder Path
-		],
+		["Money Waster", "Why do you spend this much money on a PC..\nIs this a 2009 MacBook from EBay?!", "toasterMac", "Toaster", "/misc/toaster"]
 		#end
-		
-		#if linux
-		[
-			"Stop Breaking Your System", // Name
-			"How do you break your system this bad so fast?!\nYou made your system run like shit!", // Description
-			"toasterLinux", // Internal Name
-			"Toaster", // Tag
-			"/misc/toaster", // Folder Path
-		],
+		#if linux 
+		["Stop Breaking Your System", "How do you break your system this bad so fast?!\nYou made your system run like shit!", "toasterLinux", "Toaster", "/misc/toaster"]
 		#end
-		
-		/*[
-			"Gaming with a Toaster", // Name
-			"Please just get a new pc....", // Description
-			"toasterGeneric", // Internal Name
-			"Toaster", // Tag
-			"/misc/toaster", // Folder Path
-		],*/
-		
-		[
-			"Double Sided", // Name
-			"Beat a song by only pressing 2 of your keybinds.", // Description
-			"DoubleSided", // Internal Name
-			"DoubleSided", // Tag
-			"/misc", // Folder Path
-		],
-		
-		[
-			"Debugger", // Name
-			"Beat \"Test\" from the chart editor.", // Description
-			"Debugger", // Internal Name
-			"Debugger", // Tag
-			"/misc", // Folder Path
-		],
-		
-		[
-			"Master Debugger", // Name
-			"Beat \"Test\" from the chart editor and get no misses.", // Description
-			"MasterDebugger", // Internal Name
-			"MasterDebugger", // Tag
-			"/misc", // Folder Path
-		],
 	];
 
 	public static function loadAwards()
 	{
-		if(FlxG.save.data.AwardFridayNight != null) {
-			AwardFridayNight = FlxG.save.data.AwardFridayNight;
-		}
-		
-		if(FlxG.save.data.AwardWeek1 != null) {
-			AwardWeek1 = FlxG.save.data.AwardWeek1;
-		}
-		
-		if(FlxG.save.data.AwardWeek2 != null) {
-			AwardWeek2 = FlxG.save.data.AwardWeek2;
-		}
-		
-		if(FlxG.save.data.AwardWeek3 != null) {
-			AwardWeek3 = FlxG.save.data.AwardWeek3;
-		}
-		
-		if(FlxG.save.data.AwardWeek4 != null) {
-			AwardWeek4 = FlxG.save.data.AwardWeek4;
-		}
-		
-		if(FlxG.save.data.AwardWeek5 != null) {
-			AwardWeek5 = FlxG.save.data.AwardWeek5;
-		}
-		
-		if(FlxG.save.data.AwardWeek6 != null) {
-			AwardWeek6 = FlxG.save.data.AwardWeek6;
-		}
-		
-		if(FlxG.save.data.AwardGetGood != null) {
-			AwardGetGood = FlxG.save.data.AwardGetGood;
-		}
-		
-		if(FlxG.save.data.AwardDangerZone != null) {
-			AwardDangerZone = FlxG.save.data.AwardDangerZone;
-		}
-		
-		if(FlxG.save.data.AwardOsuManiaPlayer != null) {
-			AwardOsuManiaPlayer = FlxG.save.data.AwardOsuManiaPlayer;
-		}
-		
-		if(FlxG.save.data.AwardIsToaster != null) {
-			AwardIsToaster = FlxG.save.data.AwardIsToaster;
-		}
-		
-		if(FlxG.save.data.AwardDoubleSided != null) {
-			AwardDoubleSided = FlxG.save.data.AwardDoubleSided;
-		}
-		
-		if(FlxG.save.data.AwardDebugger != null) {
-			AwardDebugger = FlxG.save.data.AwardDebugger;
-		}
-		
-		if(FlxG.save.data.AwardMasterDebugger != null) {
-			AwardDebugger = FlxG.save.data.AwardMasterDebugger;
+		if(FlxG.save.data.awardsUnlocked != null) {
+			awardsUnlocked = FlxG.save.data.awardsUnlocked;
 		}
 	}
 	
 	public static function saveAwards()
 	{
-		//save your awards shit!
-		FlxG.save.data.AwardFridayNight = AwardFridayNight;
-		FlxG.save.data.AwardWeek1 = AwardWeek1;
-		FlxG.save.data.AwardWeek2 = AwardWeek2;
-		FlxG.save.data.AwardWeek3 = AwardWeek3;
-		FlxG.save.data.AwardWeek4 = AwardWeek4;
-		FlxG.save.data.AwardWeek5 = AwardWeek5;
-		FlxG.save.data.AwardWeek6 = AwardWeek6;
-		FlxG.save.data.AwardGetGood = AwardGetGood;
-		FlxG.save.data.AwardDangerZone = AwardDangerZone;
-		FlxG.save.data.AwardOsuManiaPlayer = AwardOsuManiaPlayer;
-		FlxG.save.data.AwardIsToaster = AwardIsToaster;
-		FlxG.save.data.AwardDoubleSided = AwardDoubleSided;
-		FlxG.save.data.AwardDebugger = AwardDebugger;
-		FlxG.save.data.AwardMasterDebugger = AwardMasterDebugger;
-		
-		//save the shit!
+		FlxG.save.data.awardsUnlocked = awardsUnlocked;
 		FlxG.save.flush();
 	}
 }

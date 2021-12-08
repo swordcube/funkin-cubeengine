@@ -169,51 +169,7 @@ class AwardsState extends MusicBeatState
 		for (i in 0...checkboxArray.length) {
 			var checkbox:AttachedAchievement = checkboxArray[i];
 			if(checkbox != null) {
-				daValue = false;
-				switch(Awards.awardsStuff[checkboxNumber[i]][3]) //uses the tag
-				{
-					case 'FridayNightPlay':
-						daValue = Awards.AwardFridayNight;
-
-					case 'Week1':
-						daValue = Awards.AwardWeek1;
-						
-					case 'Week2':
-						daValue = Awards.AwardWeek2;
-
-					case 'Week3':
-						daValue = Awards.AwardWeek3;
-						
-					case 'Week4':
-						daValue = Awards.AwardWeek4;
-
-					case 'Week5':
-						daValue = Awards.AwardWeek5;
-						
-					case 'Week6':
-						daValue = Awards.AwardWeek6;
-
-					case 'GetGood':
-						daValue = Awards.AwardGetGood;
-						
-					case 'DangerZone':
-						daValue = Awards.AwardDangerZone;
-
-					case 'OsuManiaPlayer':
-						daValue = Awards.AwardOsuManiaPlayer;
-						
-					case 'Toaster':
-						daValue = Awards.AwardIsToaster;
-						
-					case 'DoubleSided':
-						daValue = Awards.AwardDoubleSided;
-
-					case 'Debugger':
-						daValue = Awards.AwardDebugger;
-						
-					case 'MasterDebugger':
-						daValue = Awards.AwardMasterDebugger;				
-				}
+				daValue = Awards.awardsUnlocked[checkboxNumber[i]];
 				checkboxGroup.members[i].unlocked = daValue;
 			}
 		}
