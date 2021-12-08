@@ -47,6 +47,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;
 import openfl.media.Sound;
 import flixel.group.FlxSpriteGroup;
+import Awards;
 import NoteSplash;
 
 #if sys
@@ -1998,6 +1999,9 @@ class PlayState extends MusicBeatState
 	{
 		var finishCallback:Void->Void = endSong; //In case you want to change it in a specific song.
 
+		canPause = false;
+		FlxG.sound.music.volume = 0;
+		vocals.volume = 0;
 		if(GamePrefs.noteOffset <= 0) {
 			finishCallback();
 		} else {
