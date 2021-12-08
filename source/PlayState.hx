@@ -47,6 +47,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;
 import openfl.media.Sound;
 import flixel.group.FlxSpriteGroup;
+import NoteSplash;
 
 #if sys
 import sys.FileSystem;
@@ -1185,6 +1186,7 @@ class PlayState extends MusicBeatState
 			{
 				var daStrumTime:Float = songNotes[0];
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
+				var isPlayer:Bool = false;
 
 				var gottaHitNote:Bool = section.mustHitSection;
 
@@ -1193,13 +1195,14 @@ class PlayState extends MusicBeatState
 					gottaHitNote = !section.mustHitSection;
 				}
 
+				isPlayer = gottaHitNote;
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, isPlayer);
 				swagNote.sustainLength = songNotes[2];
 				swagNote.scrollFactor.set(0, 0);
 
@@ -1214,7 +1217,7 @@ class PlayState extends MusicBeatState
 					{
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
+						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false, isPlayer);
 						sustainNote.scrollFactor.set();
 						unspawnNotes.push(sustainNote);
 
@@ -1258,6 +1261,9 @@ class PlayState extends MusicBeatState
 			// FlxG.log.add(i);
 			var babyArrow:FlxSprite = new FlxSprite(42, strumLine.y);
 
+			if (GamePrefs.middlescroll) {
+				babyArrow.x -= 350;
+			}
 			switch (curStage)
 			{
 				case 'school' | 'schoolEvil':
@@ -1345,6 +1351,9 @@ class PlayState extends MusicBeatState
 			if (player == 1)
 			{
 				playerStrums.add(babyArrow);
+			} else {
+				if (GamePrefs.middlescroll)
+					babyArrow.x = 10000000; //just making sure it is offscreen
 			}
 
 			babyArrow.animation.play('static');
@@ -2138,18 +2147,17 @@ class PlayState extends MusicBeatState
 		if (!curStage.startsWith('school'))
 		{
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
-			rating.antialiasing = false;
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
-			comboSpr.antialiasing = false;
+			rating.antialiasing = GamePrefs.antialiasing;
+			comboSpr.antialiasing = GamePrefs.antialiasing;
 		}
 		else
 		{
-			rating.antialiasing = GamePrefs.antialiasing;
-			comboSpr.antialiasing = GamePrefs.antialiasing;
 			rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.7));
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.7));
+			rating.antialiasing = false;
+			comboSpr.antialiasing = false;
 		}
-
 		comboSpr.updateHitbox();
 		rating.updateHitbox();
 
@@ -2169,12 +2177,12 @@ class PlayState extends MusicBeatState
 
 			if (!curStage.startsWith('school'))
 			{
-				numScore.antialiasing = false;
+				numScore.antialiasing = GamePrefs.antialiasing;
 				numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			}
 			else
 			{
-				numScore.antialiasing = GamePrefs.antialiasing;
+				numScore.antialiasing = false;
 				numScore.setGraphicSize(Std.int(numScore.width * daPixelZoom));
 			}
 			numScore.updateHitbox();
@@ -2501,6 +2509,9 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime);
 				combo += 1;
+				var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
+				funniSplash.cameras = [camHUD];
+				add(funniSplash);
 				if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
 			}
 

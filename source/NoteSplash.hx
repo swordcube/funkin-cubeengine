@@ -9,7 +9,7 @@ class NoteSplash extends FlxSprite
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
-	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0) {
+	public function new(x:Float = 0, y:Float = 0, note:Int = 0) {
 		super(x, y);
 
 		var skin:String = 'noteSplashes';
@@ -41,10 +41,10 @@ class NoteSplash extends FlxSprite
 	function loadAnims(skin:String) {
 		frames = Paths.getSparrowAtlas(skin);
 		for (i in 1...3) {
-			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
-			animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
-			animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
-			animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
+			animation.addByPrefix("note1-" + i, "note impact 1 blue", 24, false);
+			animation.addByPrefix("note2-" + i, "note impact 1 green", 24, false);
+			animation.addByPrefix("note0-" + i, "note impact 1 purple", 24, false);
+			animation.addByPrefix("note3-" + i, "note impact 1 red", 24, false);
 		}
 	}
 
