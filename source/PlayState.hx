@@ -86,9 +86,10 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var menuStartedFrom:String = "MainMenu";
 	
 	public static var songMultiplier:Float = 1;
-	public static var previousScrollSpeedLmao:Float = 0;
+	public static var songSpeed:Float = 0;
 
 	private var vocals:FlxSound;
 
@@ -227,12 +228,12 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG, songMultiplier);
 		Conductor.changeBPM(SONG.bpm, songMultiplier);
 		
-		previousScrollSpeedLmao = SONG.speed;
+		songSpeed = SONG.speed;
 
-		SONG.speed /= songMultiplier;
+		songSpeed /= songMultiplier;
 
-		if(SONG.speed < 1)
-			SONG.speed = 1;
+		if(songSpeed < 1)
+			songSpeed = 1;
 
 		Conductor.recalculateStuff(songMultiplier);
 		Conductor.safeZoneOffset *= songMultiplier;
@@ -1884,11 +1885,11 @@ class PlayState extends MusicBeatState
 
 				if(GamePrefs.downscroll)
 				{
-					daNote.y = strumLine.y - (-0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(SONG.speed, 2));
+					daNote.y = strumLine.y - (-0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(songSpeed, 2));
 				}
 				else
 				{
-					daNote.y = strumLine.y - (0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(SONG.speed, 2));
+					daNote.y = strumLine.y - (0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(songSpeed, 2));
 				}
 				
 				// i am so fucking sorry for this if condition
