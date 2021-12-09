@@ -1,10 +1,44 @@
+<div align="center"> <img src="https://github.com/swordcube/funkin-cubeengine/blob/main/art/stupid%20shit/cube%20engine%20logo.png" height=500 width=500 align="center"></div>
+<div align="center">An experimental engine by swordcube</div>
+
 # Friday Night Funkin' Cube Engine
 
-ytp sexer
+Cube Engine is an engine for Friday Night Funkin' designed to make neat little improvements to the game. Here's our to-do list and what we've done so far:
 
-## Credits / shoutouts
+## Fully finished:
+- Toggleable Outdated Warning / Yes, you can disable that stupid fucking outdated warning at the beginning of the game now.
+- Downscroll & Middlescroll / Self explanatory.
+- Ghost Tapping / If you have this disabled when you press a note that doesn't exist you'll get a miss.
+- Flashing Lights / Disables all flashing lights in the game, Includes menus n shit.
+- Anti-Aliasing / Makes performance go a bit faster on decent/shit computers
+- Framerate / Change how much s p e e d your game has, somehow helps rhythm game players idfk i'm not a fucking osu!mania player
+- Hit Sounds / If this is enabled, A hit sound will play when you hit a note, That hitsound being from osu!.
+- Scroll Speed / Change how much s p e e d your notes have lol
+- Song Time Bar / If this is enabled, The song name & difficulty along with the time remaining will show at the top or bottom of the screen during gameplay.
+- Toggle FPS Counter / Do you want the funny FPS thingy at the top left to fucking Die? Turn this shit off and your wish is grant!!
+- Optimization / Removes all characters and background shits, good for horrible dog shit poo poo fard shit ass computers!!1
+- Note Splashes / If you have this enabled, A cool firework-like effect will appear if you hit a note and get a "Sick!!" rating.
+- Opponent Arrow Opacity / Changes the opacity of the opponent/enemy's arrows, idfk why you'd want to have this changed, let alone why it was added, because Raf added it not me
 
-- [ninjamuffin99 (me!)](https://twitter.com/ninja_muffin99) - Programmer
+i have just now realized how much shit is done what the fuck
+
+btw swordcube's writing the readme unless specified otherwise
+
+## To-Do List:
+- Low Quality / Removes only SOME background shit, good for computers that are.. decent
+- Custom Note Skin / Allows you to change the look of your notes in the Note Skin menu.
+- Camera Zooms / If you have this disabled the camera won't zoom every few beats or every 8276347329128748329 nanoseconds in M.I.L.F on that one part.
+- Arrow Underlay / Puts a funny black background behind your arrows so you can SEE them. On certain backgrounds the arrows can blend in, so this may help.
+- Underlay Opacity / Change the opacity/transparency of the Funny arrow underlay
+
+## Cube Engine Credits / Shoutouts
+- [swordcube (Me Lol)](https://twitter.com/swordcube) - Dumbass Programmer
+- [Raf](https://github.com/RafaelGiacom) - 999x Smarter Programmer
+- [Vienna](https://twitter.com/MarcyRoseX) - Idea suggester or smth idfk, suggested health percentage text
+
+## Funkin' Credits / Shoutouts
+
+- [ninjamuffin99](https://twitter.com/ninja_muffin99) - Programmer
 - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
 - [Kawaisprite](https://twitter.com/kawaisprite) - Musician
 
@@ -31,6 +65,7 @@ Other installations you'd need are the additional libraries, a fully updated lis
 flixel
 flixel-addons
 flixel-ui
+linc-luajit
 hscript
 newgrounds
 ```
