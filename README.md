@@ -1,7 +1,7 @@
 <div align="center"> <img src="https://github.com/swordcube/funkin-cubeengine/blob/main/art/stupid%20shit/cube%20engine%20logo.png" height=350 width=500 align="center"></div>
 <div align="center">An experimental engine by swordcube</div>
 
-# Friday Night Funkin' Cube Engine
+# About the engine
 
 Cube Engine is an engine for Friday Night Funkin' designed to make neat little improvements to the game. Here's our to-do list and what we've done so far:
 
