@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxColor;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 
@@ -16,6 +17,8 @@ class Character extends FlxSprite
 	public var curCharacter:String = 'bf';
 	//public var healthicon:String;
 	public var healthIcon:String = 'face';
+	
+	public var barColor:FlxColor;
 
 	public var holdTimer:Float = 0;
 
@@ -23,6 +26,7 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
+		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
 		animOffsets = new Map<String, Array<Dynamic>>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
@@ -64,6 +68,7 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 				healthIcon = 'gf';
+				barColor = 0xFFb02752;
 
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('christmas/gfChristmas');
@@ -96,6 +101,7 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 				healthIcon = 'gf';
+				barColor = 0xFFb02752;
 
 			case 'gf-car':
 				tex = Paths.getSparrowAtlas('gfCar');
@@ -110,6 +116,7 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 				healthIcon = 'gf';
+				barColor = 0xFFb02752;
 
 			case 'gf-pixel':
 				tex = Paths.getSparrowAtlas('weeb/gfPixel');
@@ -127,6 +134,7 @@ class Character extends FlxSprite
 				updateHitbox();
 				antialiasing = false;
 				healthIcon = 'gf-pixel';
+				barColor = 0xFFcf3263;
 
 			case 'dad':
 				// DAD ANIMATION LOADING CODE
@@ -146,6 +154,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 				healthIcon = 'dad';
+				barColor = 0xFFaf66ce;
+				
 			case 'spooky':
 				tex = Paths.getSparrowAtlas('spooky_kids_assets');
 				frames = tex;
@@ -166,6 +176,8 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 				healthIcon = 'spooky';
+				barColor = 0xFFd57e00;
+				
 			case 'mom':
 				tex = Paths.getSparrowAtlas('Mom_Assets');
 				frames = tex;
@@ -186,6 +198,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 				healthIcon = 'mom';
+				barColor = 0xFFd8558e;
 
 			case 'mom-car':
 				tex = Paths.getSparrowAtlas('momCar');
@@ -207,6 +220,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 				healthIcon = 'mom';
+				barColor = 0xFFd8558e;
+				
 			case 'monster':
 				tex = Paths.getSparrowAtlas('Monster_Assets');
 				frames = tex;
@@ -223,6 +238,8 @@ class Character extends FlxSprite
 				addOffset("singDOWN", -30, -40);
 				playAnim('idle');
 				healthIcon = 'monster';
+				barColor = 0xFFf3ff6e;
+				
 			case 'monster-christmas':
 				tex = Paths.getSparrowAtlas('christmas/monsterChristmas');
 				frames = tex;
@@ -239,6 +256,8 @@ class Character extends FlxSprite
 				addOffset("singDOWN", -40, -94);
 				playAnim('idle');
 				healthIcon = 'monster';
+				barColor = 0xFFf3ff6e;
+				
 			case 'pico':
 				tex = Paths.getSparrowAtlas('Pico_FNF_assetss');
 				frames = tex;
@@ -278,6 +297,7 @@ class Character extends FlxSprite
 				healthIcon = 'pico';
 
 				flipX = true;
+				barColor = 0xFFb7d855;
 
 			case 'bf':
 				var tex = Paths.getSparrowAtlas('BOYFRIEND');
@@ -318,6 +338,7 @@ class Character extends FlxSprite
 				healthIcon = 'bf';
 
 				flipX = true;
+				barColor = 0xFF31b0d1;
 
 			case 'bf-christmas':
 				var tex = Paths.getSparrowAtlas('christmas/bfChristmas');
@@ -348,6 +369,8 @@ class Character extends FlxSprite
 				healthIcon = 'bf';
 
 				flipX = true;
+				barColor = 0xFF31b0d1;
+				
 			case 'bf-car':
 				var tex = Paths.getSparrowAtlas('bfCar');
 				frames = tex;
@@ -374,6 +397,8 @@ class Character extends FlxSprite
 				healthIcon = 'bf';
 
 				flipX = true;
+				barColor = 0xFF31b0d1;
+				
 			case 'bf-pixel':
 				frames = Paths.getSparrowAtlas('weeb/bfPixel');
 				animation.addByPrefix('idle', 'BF IDLE', 24, false);
@@ -408,6 +433,8 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 				flipX = true;
+				barColor = 0xFF31b0d1;
+				
 			case 'bf-pixel-dead':
 				frames = Paths.getSparrowAtlas('weeb/bfPixelsDEAD');
 				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
@@ -425,6 +452,7 @@ class Character extends FlxSprite
 				updateHitbox();
 				antialiasing = false;
 				flipX = true;
+				barColor = 0xFF31b0d1;
 
 			case 'senpai':
 				frames = Paths.getSparrowAtlas('weeb/senpai');
@@ -447,6 +475,8 @@ class Character extends FlxSprite
 				updateHitbox();
 
 				antialiasing = false;
+				barColor = 0xFFffaa6f;
+				
 			case 'senpai-angry':
 				frames = Paths.getSparrowAtlas('weeb/senpai');
 				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
@@ -467,6 +497,7 @@ class Character extends FlxSprite
 				updateHitbox();
 
 				antialiasing = false;
+				barColor = 0xFFffaa6f;
 
 			case 'spirit':
 				frames = Paths.getPackerAtlas('weeb/spirit');
@@ -489,6 +520,7 @@ class Character extends FlxSprite
 				healthIcon = 'spirit-pixel';
 
 				antialiasing = false;
+				barColor = 0xFFff3c6e;
 
 			case 'parents-christmas':
 				frames = Paths.getSparrowAtlas('christmas/mom_dad_christmas_assets');
@@ -516,6 +548,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 				healthIcon = 'parents';
+				barColor = 0xFF9a00f8;
 		}
 
 		dance();
