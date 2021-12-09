@@ -92,6 +92,7 @@ class PlayState extends MusicBeatState
 	public static var songSpeed:Float = 0;
 	
 	public static var strumX:Float = 58;
+	public static var strumXMIDDLESCROLL:Float = 335;
 
 	private var vocals:FlxSound;
 
@@ -241,6 +242,9 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm, songMultiplier);
 		
 		songSpeed = SONG.speed;
+		
+		if(GamePrefs.scrollSpeed > 1)
+			songSpeed = GamePrefs.scrollSpeed;
 
 		songSpeed /= songMultiplier;
 
@@ -556,6 +560,8 @@ class PlayState extends MusicBeatState
 			  case 'school':
 			  {
 				  // defaultCamZoom = 0.9;
+				  
+				  strumXMIDDLESCROLL = 332;
 
 				  var bgSky = new FlxSprite().loadGraphic(Paths.image('weeb/weebSky'));
 				  bgSky.scrollFactor.set(0.1, 0.1);
@@ -621,6 +627,8 @@ class PlayState extends MusicBeatState
 			  
 			  case 'schoolEvil':
 			  {
+				  strumXMIDDLESCROLL = 332;
+			  
 				  var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 				  var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
 
@@ -1308,7 +1316,7 @@ class PlayState extends MusicBeatState
 			var babyArrow:FlxSprite = new FlxSprite(strumX, strumLine.y);
 
 			if (GamePrefs.middlescroll) {
-				babyArrow.x -= 320;
+				babyArrow.x -= strumXMIDDLESCROLL;
 			}
 			switch (curStage)
 			{
@@ -1608,6 +1616,13 @@ class PlayState extends MusicBeatState
 			if (strumLineNotes.members[i].animation.curAnim.name == 'confirm' && strumLineNotes.members[i].animation.curAnim.finished)
 			{
 				strumLineNotes.members[i].animation.play('static');
+				
+				if (!curStage.startsWith('school'))
+				{
+					strumLineNotes.members[i].centerOffsets();
+				}
+				else
+					strumLineNotes.members[i].centerOffsets();
 			}
 		}
 		
@@ -1616,6 +1631,13 @@ class PlayState extends MusicBeatState
 			if (botplay && spr.animation.curAnim.name == 'confirm' && spr.animation.curAnim.finished)
 			{
 				spr.animation.play('static');
+				
+				if (!curStage.startsWith('school'))
+				{
+					spr.centerOffsets();
+				}
+				else
+					spr.centerOffsets();
 			}
 		});
 		
@@ -2001,6 +2023,15 @@ class PlayState extends MusicBeatState
 					daNote.destroy();
 					
 					strumLineNotes.members[daNote.noteData].animation.play('confirm', true);
+					
+					if (strumLineNotes.members[daNote.noteData].animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+					{
+						strumLineNotes.members[daNote.noteData].centerOffsets();
+						strumLineNotes.members[daNote.noteData].offset.x -= 13;
+						strumLineNotes.members[daNote.noteData].offset.y -= 13;
+					}
+					else
+						strumLineNotes.members[daNote.noteData].centerOffsets();
 				}
 
 				// WIP interpolation shit? Need to fix the pause issue
@@ -2545,6 +2576,15 @@ class PlayState extends MusicBeatState
 						if (Math.abs(daNote.noteData) == spr.ID)
 						{
 							spr.animation.play('confirm', true);
+										
+							if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+							{
+								spr.centerOffsets();
+								spr.offset.x -= 13;
+								spr.offset.y -= 13;
+							}
+							else
+								spr.centerOffsets();
 						}
 					});
 				}
