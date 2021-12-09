@@ -45,6 +45,7 @@ jobs:
           haxelib install hxjsonast
           haxelib install linc_luajit
           haxelib install hscript
+          haxelib install newgrounds
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
