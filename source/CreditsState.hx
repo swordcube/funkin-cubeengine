@@ -50,8 +50,8 @@ class CreditsState extends MusicBeatState
 		[""],
 		["Cube Engine Team"],
 		["swordcube", "swordcube", "Programmer of Cube Engine", '6475F3', 'https://twitter.com/swordcube', "cube-team/"],
-		["Raf", "raf", "Added Middlescroll and Note Splashes", '38261B', 'https://twitter.com/swordcube', "cube-team/"],
-		["Vienna", "vienna", "Suggested the health percentage at the top of\nthe health bar thingy", 'E6B04C', 'https://twitter.com/swordcube', "cube-team/"],
+		["Raf", "raf", "Added Middlescroll and Note Splashes", '38261B', 'https://github.com/RafaelGiacom', "cube-team/"],
+		["Vienna", "vienna", "Suggested the health percentage at the top of\nthe health bar thingy", 'E6B04C', 'https://twitter.com/MarcyRoseX', "cube-team/"],
 	];
 	
 	override function create()
