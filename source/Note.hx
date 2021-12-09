@@ -43,7 +43,7 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		x += 50;
-		x += 42;
+		x += PlayState.strumX;
 		if (GamePrefs.middlescroll) {
 			x -= 320;
 			if (!isPlayer) {

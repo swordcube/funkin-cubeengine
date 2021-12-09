@@ -187,19 +187,19 @@ class MainMenuState extends MusicBeatState
 								{
 									case 'story_mode':
 										FlxG.switchState(new StoryMenuState());
-										trace("Entered State: Story Mode");
+										trace("Entered State: Story Mode Menu");
 										
 									case 'freeplay':
 										FlxG.switchState(new FreeplayState());
-										trace("Entered State: Freeplay");
+										trace("Entered State: Freeplay Menu");
 										
 									case 'awards':
 										FlxG.switchState(new AwardsState());
 										trace("Entered State: Awards Menu");
 										
 									case 'credits':
-										FlxG.switchState(new FreeplayState());
-										trace("lol fuck you credits don't exist get freeplay'd");
+										FlxG.switchState(new CreditsState());
+										trace("Entered State: Credits Menu");
 
 									case 'options':
 										/*FlxTransitionableState.skipNextTransIn = true;
