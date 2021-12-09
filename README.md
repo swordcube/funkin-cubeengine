@@ -1,4 +1,4 @@
-<div align="center"> <img src="https://github.com/swordcube/funkin-cubeengine/blob/main/art/stupid%20shit/cube%20engine%20logo.png" height=800 width=500 align="center"></div>
+<div align="center"> <img src="https://github.com/swordcube/funkin-cubeengine/blob/main/art/stupid%20shit/cube%20engine%20logo.png" height=300 width=500 align="center"></div>
 <div align="center">An experimental engine by swordcube</div>
 
 # Friday Night Funkin' Cube Engine
