@@ -53,6 +53,7 @@ class GameplaySubState extends MusicBeatSubstate
 		['Arrow Underlay', "When enabled, A black background will show behind your arrows.\nThis can help with focus."],
 		['Underlay Opacity', "Change the opacity of the Arrow Underlay using LEFT & RIGHT."],
 		['Scroll Speed', "Change how fast or slow your arrows go using LEFT & RIGHT.\n1 = The speed becomes dependent on the chart."],
+		['Opponent Arrow Opacity', "Change the opacity of the opponent arrows"]
 		/*['number test', "press left & right to change\nthis is for testing only"],
 		['checkbox test', "press enter to toggle\nthis is for testing only"],*/
 	];
@@ -65,6 +66,7 @@ class GameplaySubState extends MusicBeatSubstate
 		'Scroll Speed',
 		'Framerate',
 		'Note Offset',
+		'Opponent Arrow Opacity',
 	];
 
 	override function create()
@@ -253,6 +255,11 @@ class GameplaySubState extends MusicBeatSubstate
 						GamePrefs.noteOffset += add/10;
 						if(GamePrefs.noteOffset < 0) GamePrefs.noteOffset = 0;
 						if(GamePrefs.noteOffset > 999) GamePrefs.noteOffset = 999;
+
+					case 'Opponent Arrow Opacity':
+						GamePrefs.opponentArrowOpacity += add/10;
+						if(GamePrefs.opponentArrowOpacity < 0) GamePrefs.opponentArrowOpacity = 0;
+						if(GamePrefs.opponentArrowOpacity > 1) GamePrefs.opponentArrowOpacity = 1;
 						
 					case 'number test':
 						GamePrefs.numberTest += add;
@@ -373,6 +380,9 @@ class GameplaySubState extends MusicBeatSubstate
 					case 'Note Offset':
 						daText = FlxMath.roundDecimal(GamePrefs.noteOffset, 2)+"";
 						
+					case 'Opponent Arrow Opacity':
+						daText = FlxMath.roundDecimal(GamePrefs.opponentArrowOpacity, 2)+"";
+
 					case 'number test':
 						daText = FlxMath.roundDecimal(GamePrefs.numberTest, 2)+"";
 				}

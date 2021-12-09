@@ -11,6 +11,7 @@ using StringTools;
 class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
+	public var sprTrackerLeft:Bool = false;
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
@@ -28,12 +29,12 @@ class HealthIcon extends FlxSprite
 	{
 		super.update(elapsed);
 
-		if (sprTracker != null)
-			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
-			
-		antialiasing = GamePrefs.antialiasing;
-		if(char.endsWith('-pixel')) {
-			antialiasing = false;
+		if (sprTracker != null) {
+			if (sprTrackerLeft == false) {
+				setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
+			} else {
+				setPosition(sprTracker.x - width - 10, sprTracker.y - 30);
+			}
 		}
 	}
 
@@ -51,7 +52,13 @@ class HealthIcon extends FlxSprite
 
 			var name:String = 'icons/' + char;
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
-			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face'; //Prevents crash from missing icon
+			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) {
+				if (char.endsWith('pixel')) {
+					name = 'icons/icon-face-pixel'; //Prevents crash from missing icon
+				} else {
+					name = 'icons/icon-face'; //Prevents crash from missing icon
+				}
+			}
 			
 			var file:FlxAtlasFrames = Paths.getSparrowAtlas(name);
 			frames = file;

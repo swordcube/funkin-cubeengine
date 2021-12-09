@@ -50,6 +50,11 @@ class Note extends FlxSprite
 				x = 10000000; //just making sure it is offscreen
 			}
 		}
+		
+		if (!isPlayer) {
+			alpha = GamePrefs.opponentArrowOpacity;
+		}
+
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
@@ -131,7 +136,12 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
-			alpha = 0.6;
+			
+			if (!isPlayer) {
+				alpha = GamePrefs.opponentArrowOpacity - 0.4;
+			} else {
+				alpha = 0.6;
+			}
 
 			x += width / 2;
 			
