@@ -40,6 +40,7 @@ class GamePrefs
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
 	public static var songTimeBar:Bool = false; //Song Time Bar
+	public static var opponentArrowOpacity:Float = 1; //Opponent Arrow Opacity
 	
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
@@ -174,6 +175,10 @@ class GamePrefs
 		if(FlxG.save.data.songTimeBar != null) {
 			songTimeBar = FlxG.save.data.songTimeBar;
 		}
+
+		if(FlxG.save.data.opponentArrowOpacity != null) {
+			opponentArrowOpacity = FlxG.save.data.opponentArrowOpacity;
+		}
 		
 		// load volume lol
 		if(FlxG.save.data.volume != null) {
@@ -215,6 +220,7 @@ class GamePrefs
 		FlxG.save.data.underlayOpacity = underlayOpacity;
 		FlxG.save.data.scrollSpeed = scrollSpeed;
 		FlxG.save.data.songTimeBar = songTimeBar;
+		FlxG.save.data.opponentArrowOpacity = opponentArrowOpacity;
 		
 		//save the shit!
 		FlxG.save.flush();

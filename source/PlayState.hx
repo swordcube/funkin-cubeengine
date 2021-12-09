@@ -1386,8 +1386,8 @@ class PlayState extends MusicBeatState
 			if (!isStoryMode)
 			{
 				babyArrow.y -= 10;
-				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				//babyArrow.alpha = 0;
+				//FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
 			babyArrow.ID = i;
@@ -1398,6 +1398,7 @@ class PlayState extends MusicBeatState
 			} else {
 				if (GamePrefs.middlescroll)
 					babyArrow.x = 10000000; //just making sure it is offscreen
+				babyArrow.alpha = GamePrefs.opponentArrowOpacity;
 			}
 
 			babyArrow.animation.play('static');
