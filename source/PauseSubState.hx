@@ -17,10 +17,19 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Toggle Practice Mode', 'Botplay', 'Exit to menu'];
+	var menuItems:Array<Dynamic> = [
+		['Resume', 'Exits the pause menu.'],
+		['Restart Song', 'Restarts the song.\nAlso resets your misses and accuracy.'],
+		['Toggle Practice Mode', 'When enabled, You cannot get blueballed.'],
+		['Botplay', 'When enabled, The song gets played for you.'],
+		['Exit to menu', 'Exits to Story Mode/Freeplay/Main Menu.'],
+	];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
+	var practiceText:FlxText;
+	var botplayText:FlxText;
+	var descText:FlxText;
 
 	public function new(x:Float, y:Float)
 	{
@@ -50,29 +59,61 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
+		
+		var blueballedText:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
+		blueballedText.text = "Blueballed: " + PlayState.deathCounter;
+		blueballedText.scrollFactor.set();
+		blueballedText.setFormat(Paths.font('vcr.ttf'), 32);
+		blueballedText.updateHitbox();
+		add(blueballedText);
+		
+		practiceText = new FlxText(20, 15 + 101, 0, "PRACTICE MODE", 32);
+		practiceText.scrollFactor.set();
+		practiceText.setFormat(Paths.font('vcr.ttf'), 32);
+		practiceText.x = FlxG.width - (practiceText.width + 20);
+		practiceText.updateHitbox();
+		practiceText.visible = PlayState.practiceMode;
+		add(practiceText);
+		
+		botplayText = new FlxText(20, FlxG.height - 40, 0, "BOTPLAY", 32);
+		botplayText.scrollFactor.set();
+		botplayText.setFormat(Paths.font('vcr.ttf'), 32);
+		botplayText.x = FlxG.width - (botplayText.width + 20);
+		botplayText.updateHitbox();
+		botplayText.visible = PlayState.botplay;
+		add(botplayText);
 
+		blueballedText.alpha = 0;
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
+		blueballedText.x = FlxG.width - (blueballedText.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(blueballedText, {alpha: 1, y: blueballedText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
 
 		for (i in 0...menuItems.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i][0], true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpMenuShit.add(songText);
 		}
 
 		changeSelection();
+		
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.borderSize = 2.4;
+		add(descText);
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
@@ -99,16 +140,29 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (accepted)
 		{
-			var daSelected:String = menuItems[curSelected];
+			var daSelected:String = menuItems[curSelected][0];
 
 			switch (daSelected)
 			{
 				case "Resume":
 					close();
+					
 				case "Restart Song":
 					FlxG.resetState();
+					
+				case "Toggle Practice Mode":
+					PlayState.practiceMode = !PlayState.practiceMode;
+					PlayState.usedPracticeMode = true; // makes it so if you've toggled practice mode, your score won't submit
+					practiceText.visible = PlayState.practiceMode;
+					
+				case "Botplay":
+					PlayState.botplay = !PlayState.botplay;
+					PlayState.usedBotplay = true; // makes it so if you've toggled botplay, your score won't submit
+					botplayText.visible = PlayState.botplay;
+					
 				case "Exit to menu":
-				switch (PlayState.menuStartedFrom)
+				
+				switch (PlayState.menuStartedFrom) // go back to the menu you came from when you started a song
 				{
 					case "StoryMode":
 						FlxG.switchState(new StoryMenuState());
@@ -125,6 +179,8 @@ class PauseSubState extends MusicBeatSubstate
 			// for reference later!
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
+		
+		descText.text = menuItems[curSelected][1];
 	}
 
 	override function destroy()
