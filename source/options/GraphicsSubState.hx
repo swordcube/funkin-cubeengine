@@ -48,7 +48,6 @@ class GraphicsSubState extends MusicBeatSubstate
 		['Optimization', "When enabled, The background and characters will disappear.\nYou will get a huge performance boost from this."],
 		['Toggle FPS Counter', "When disabled, The FPS Counter at the top left will disappear."],
 		['Note Splashes', "When enabled, A special effect will play when you hit a \"Sick!\" note."],
-		['Custom Note Skin', "When enabled, You can change the look of your notes in the\nNote Skin menu."],
 		['Camera Zooms', "When enabled, the camera will zoom to the beat of the song."],
 		/*['number test', "press left & right to change\nthis is for testing only"],
 		['checkbox test', "press enter to toggle\nthis is for testing only"],*/
@@ -205,9 +204,6 @@ class GraphicsSubState extends MusicBeatSubstate
 					case 'Note Splashes':
 						GamePrefs.noteSplashes = !GamePrefs.noteSplashes;
 						
-					case 'Custom Note Skin':
-						GamePrefs.customNoteSkin = !GamePrefs.customNoteSkin;
-						
 					case 'Camera Zooms':
 						GamePrefs.cameraZooms = !GamePrefs.cameraZooms;
 						
@@ -312,9 +308,6 @@ class GraphicsSubState extends MusicBeatSubstate
 						
 					case 'Note Splashes':
 						daValue = GamePrefs.noteSplashes;
-						
-					case 'Custom Note Skin':
-						daValue = GamePrefs.customNoteSkin;
 						
 					case 'Camera Zooms':
 						daValue = GamePrefs.cameraZooms;

@@ -1321,7 +1321,7 @@ class PlayState extends MusicBeatState
 			switch (curStage)
 			{
 				case 'school' | 'schoolEvil':
-					babyArrow.loadGraphic(Paths.image('pixelUI/noteskins/NOTE_assets'), true, 17, 17);
+					babyArrow.loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assets'), true, 17, 17);
 					babyArrow.animation.add('green', [6]);
 					babyArrow.animation.add('red', [7]);
 					babyArrow.animation.add('blue', [5]);

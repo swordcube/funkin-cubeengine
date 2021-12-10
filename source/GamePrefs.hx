@@ -25,8 +25,14 @@ class GamePrefs
 	public static var optimization:Bool = false; //Optimization Mode
 	public static var toggleFPS:Bool = true; //Toggle FPS Counter
 	public static var noteSplashes:Bool = true; //Note Splashes
-	public static var customNoteSkin:Bool = false; //Custom Note Skin
+	public static var noteShit:Array<Dynamic> = [  //Custom Note Shit
+		[[0, 0, 0], 'NOTE'], //left
+		[[0, 0, 0], 'NOTE'], //down
+		[[0, 0, 0], 'NOTE'], //up
+		[[0, 0, 0], 'NOTE']  //right
+	]; 
 	public static var cameraZooms:Bool = true; //Camera Zooms
+	public static var opponentArrowOpacity:Float = 1; //Opponent Arrow Opacity
 	
 	// -- GAMEPLAY CATEGORY --
 	public static var toggleOutdatedWarning:Bool = true; //Toggle Outdated Warning
@@ -40,7 +46,6 @@ class GamePrefs
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
 	public static var songTimeBar:Bool = false; //Song Time Bar
-	public static var opponentArrowOpacity:Float = 1; //Opponent Arrow Opacity
 	
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
@@ -117,8 +122,8 @@ class GamePrefs
 			noteSplashes = FlxG.save.data.noteSplashes;
 		}
 		
-		if(FlxG.save.data.customNoteSkin != null) {
-			customNoteSkin = FlxG.save.data.customNoteSkin;
+		if(FlxG.save.data.noteShit != null) {
+			noteShit = FlxG.save.data.noteShit;
 		}
 		
 		if(FlxG.save.data.cameraZooms != null) {
@@ -206,7 +211,7 @@ class GamePrefs
 		FlxG.save.data.optimization = optimization;
 		FlxG.save.data.toggleFPS = toggleFPS;
 		FlxG.save.data.noteSplashes = noteSplashes;
-		FlxG.save.data.customNoteSkin = customNoteSkin;
+		FlxG.save.data.noteShit = noteShit;
 		FlxG.save.data.cameraZooms = cameraZooms;
 		//-- GAMEPLAY SHIT --
 		FlxG.save.data.toggleOutdatedWarning = toggleOutdatedWarning;

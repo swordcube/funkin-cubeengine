@@ -39,6 +39,9 @@ class FreeplayState extends MusicBeatState
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 
+	var bg:FlxSprite;
+	var bg2:FlxSprite;
+
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
@@ -51,7 +54,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...initSonglist.length)
 		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
+			songs.push(new SongMetadata(initSonglist[i], 1, 'gf', [0xA5004D]));
 		}
 
 		/* 
@@ -76,30 +79,33 @@ class FreeplayState extends MusicBeatState
 		// when mod support comes this code will go burn in hell
 
 		if (StoryMenuState.weekUnlocked[1] || isDebug)
-			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad']);
+			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad'], [[0xaf66ce]]);
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
-			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster']);
+			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster'], [[0xb4b4b4, 0xd57e00], [0xb4b4b4, 0xd57e00], [0xf3ff6e]]);
 
 		if (StoryMenuState.weekUnlocked[3] || isDebug)
-			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
+			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico'], [[0xb7d855]]);
 
 		if (StoryMenuState.weekUnlocked[4] || isDebug)
-			addWeek(['Satin Panties', 'High', 'Milf'], 4, ['mom']);
+			addWeek(['Satin Panties', 'High', 'Milf'], 4, ['mom'], [[0xd8558e]]);
 
 		if (StoryMenuState.weekUnlocked[5] || isDebug)
-			addWeek(['Cocoa', 'Eggnog', 'Winter Horrorland'], 5, ['parents', 'parents', 'monster']);
+			addWeek(['Cocoa', 'Eggnog', 'Winter Horrorland'], 5, ['parents', 'parents', 'monster'], [[0xaf66ce, 0xd8558e], [0xaf66ce, 0xd8558e], [0xf3ff6e]]);
 
 		if (StoryMenuState.weekUnlocked[6] || isDebug)
-			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai-pixel', 'senpai-pixel', 'spirit-pixel']);
+			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai-pixel', 'senpai-pixel', 'spirit-pixel'], [[0xffaa6f], [0xffaa6f], [0xff3c6e]]);
 
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = GamePrefs.antialiasing;
 		add(bg);
+		bg2 = new FlxSprite().loadGraphic(Paths.image('menuDesatGradient'));
+		bg2.antialiasing = GamePrefs.antialiasing;
+		add(bg2);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -186,12 +192,12 @@ class FreeplayState extends MusicBeatState
 		super.create();
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String)
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, bgColors:Array<Int>)
 	{
-		songs.push(new SongMetadata(songName, weekNum, songCharacter));
+		songs.push(new SongMetadata(songName, weekNum, songCharacter, bgColors));
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, bgColors:Array<Dynamic>)
 	{
 		if (songCharacters == null)
 			songCharacters = ['bf'];
@@ -199,7 +205,7 @@ class FreeplayState extends MusicBeatState
 		var num:Int = 0;
 		for (song in songs)
 		{
-			addSong(song, weekNum, songCharacters[num]);
+			addSong(song, weekNum, songCharacters[num], bgColors[num]);
 
 			if (songCharacters.length != 1)
 				num++;
@@ -367,6 +373,13 @@ class FreeplayState extends MusicBeatState
 			destroyFreeplayVocals();
 		}
 		
+		bg.color = songs[curSelected].bgColors[0];
+		if (songs[curSelected].bgColors[1] != null) {
+			bg2.color = songs[curSelected].bgColors[1];
+		} else {
+			bg2.color = songs[curSelected].bgColors[0];
+		}
+
 		super.update(elapsed);
 	}
 	
@@ -470,11 +483,13 @@ class SongMetadata
 	public var songName:String = "";
 	public var week:Int = 0;
 	public var songCharacter:String = "";
+	public var bgColors:Array<Int> = [0xFFFFFF];
 
-	public function new(song:String, week:Int, songCharacter:String)
+	public function new(song:String, week:Int, songCharacter:String, bgColors:Array<Int>)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+		this.bgColors = bgColors;
 	}
 }
