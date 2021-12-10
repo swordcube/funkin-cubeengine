@@ -47,6 +47,9 @@ class GamePrefs
 	public static var scrollSpeed:Float = 1; //Scroll Speed
 	public static var songTimeBar:Bool = false; //Song Time Bar
 	
+	// -- OTHER SHITS --
+	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+	
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
 	public static var numberTest:Float = 1;
@@ -193,6 +196,14 @@ class GamePrefs
 			FlxG.sound.muted = FlxG.save.data.mute;
 		}
 		
+		// arrow hsv shit
+		
+		if(FlxG.save.data.arrowHSV != null) {
+			arrowHSV = FlxG.save.data.arrowHSV;
+		}
+		
+		// load controls!!!!
+		
 		var save:FlxSave = new FlxSave();
 		save.bind('controls', 'ninjamuffin99');
 		if(save != null && save.data.customControls != null) {
@@ -226,6 +237,9 @@ class GamePrefs
 		FlxG.save.data.scrollSpeed = scrollSpeed;
 		FlxG.save.data.songTimeBar = songTimeBar;
 		FlxG.save.data.opponentArrowOpacity = opponentArrowOpacity;
+		
+		// arrow hsv shit
+		FlxG.save.data.arrowHSV = arrowHSV;
 		
 		//save the shit!
 		FlxG.save.flush();
