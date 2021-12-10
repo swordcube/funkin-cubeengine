@@ -41,6 +41,10 @@ class FreeplayState extends MusicBeatState
 
 	var bg:FlxSprite;
 	var bg2:FlxSprite;
+	public static var intendedColor:Int;
+	public static var colorTween:FlxTween;
+	public static var intendedColor2:Int;
+	public static var colorTween2:FlxTween;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -54,7 +58,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...initSonglist.length)
 		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf', [0xA5004D]));
+			songs.push(new SongMetadata(initSonglist[i], 1, 'gf', [0xFFA5004D]));
 		}
 
 		/* 
@@ -79,22 +83,22 @@ class FreeplayState extends MusicBeatState
 		// when mod support comes this code will go burn in hell
 
 		if (StoryMenuState.weekUnlocked[1] || isDebug)
-			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad'], [[0xaf66ce]]);
+			addWeek(['Bopeebo', 'Fresh', 'Dad Battle'], 1, ['dad'], [[0xFFaf66ce]]);
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
-			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster'], [[0xb4b4b4, 0xd57e00], [0xb4b4b4, 0xd57e00], [0xf3ff6e]]);
+			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster'], [[0xFFb4b4b4, 0xFFd57e00], [0xFFb4b4b4, 0xFFd57e00], [0xFFf3ff6e]]);
 
 		if (StoryMenuState.weekUnlocked[3] || isDebug)
-			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico'], [[0xb7d855]]);
+			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico'], [[0xFFb7d855]]);
 
 		if (StoryMenuState.weekUnlocked[4] || isDebug)
-			addWeek(['Satin Panties', 'High', 'Milf'], 4, ['mom'], [[0xd8558e]]);
+			addWeek(['Satin Panties', 'High', 'Milf'], 4, ['mom'], [[0xFFd8558e]]);
 
 		if (StoryMenuState.weekUnlocked[5] || isDebug)
-			addWeek(['Cocoa', 'Eggnog', 'Winter Horrorland'], 5, ['parents', 'parents', 'monster'], [[0xaf66ce, 0xd8558e], [0xaf66ce, 0xd8558e], [0xf3ff6e]]);
+			addWeek(['Cocoa', 'Eggnog', 'Winter Horrorland'], 5, ['parents', 'parents', 'monster'], [[0xFFaf66ce, 0xFFd8558e], [0xFFaf66ce, 0xFFd8558e], [0xFFf3ff6e]]);
 
 		if (StoryMenuState.weekUnlocked[6] || isDebug)
-			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai-pixel', 'senpai-pixel', 'spirit-pixel'], [[0xffaa6f], [0xffaa6f], [0xff3c6e]]);
+			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai-pixel', 'senpai-pixel', 'spirit-pixel'], [[0xFFffaa6f], [0xFFffaa6f], [0xFFff3c6e]]);
 
 		// LOAD MUSIC
 
@@ -189,6 +193,16 @@ class FreeplayState extends MusicBeatState
 		text.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+		
+		bg.color = songs[curSelected].bgColors[0];
+		if (songs[curSelected].bgColors[1] != 0) {
+			bg2.color = songs[curSelected].bgColors[1];
+		} else {
+			bg2.color = songs[curSelected].bgColors[0];
+		}
+		intendedColor = bg.color;
+		intendedColor2 = bg2.color;
+		
 		super.create();
 	}
 
@@ -317,6 +331,12 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			if(colorTween != null) {
+				colorTween.cancel();
+			}
+			if(colorTween2 != null) {
+				colorTween2.cancel();
+			}
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -371,13 +391,6 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume = 0;
 					
 			destroyFreeplayVocals();
-		}
-		
-		bg.color = songs[curSelected].bgColors[0];
-		if (songs[curSelected].bgColors[1] != 0) {
-			bg2.color = songs[curSelected].bgColors[1];
-		} else {
-			bg2.color = songs[curSelected].bgColors[0];
 		}
 
 		super.update(elapsed);
@@ -435,6 +448,32 @@ class FreeplayState extends MusicBeatState
 			curSelected = songs.length - 1;
 		if (curSelected >= songs.length)
 			curSelected = 0;
+			
+		var newColor:Int = getCurrentBGColor();
+		if(newColor != intendedColor) {
+			if(colorTween != null) {
+				colorTween.cancel();
+			}
+			intendedColor = newColor;
+			colorTween = FlxTween.color(bg, 1, bg.color, intendedColor, {
+				onComplete: function(twn:FlxTween) {
+					colorTween = null;
+				}
+			});
+		}
+		
+		var newColor2:Int = getCurrentBGColor2();
+		if(newColor2 != intendedColor2) {
+			if(colorTween2 != null) {
+				colorTween2.cancel();
+			}
+			intendedColor2 = newColor2;
+			colorTween2 = FlxTween.color(bg2, 1, bg2.color, intendedColor2, {
+				onComplete: function(twn:FlxTween) {
+					colorTween2 = null;
+				}
+			});
+		}
 
 		// selector.y = (70 * curSelected) + 30;
 
@@ -476,6 +515,23 @@ class FreeplayState extends MusicBeatState
 		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
 		diffText.x -= diffText.width / 2;
 	}
+	
+	function getCurrentBGColor() {
+		var bgColor:Int = songs[curSelected].bgColors[0];
+		//bgColor = '0xFF' + bgColor;
+		return /*Std.parseInt(*/bgColor/*)*/;
+	}
+	
+	function getCurrentBGColor2() {
+		var bgColor2:Int = 0;
+		if (songs[curSelected].bgColors[1] != 0) {
+			bgColor2 = songs[curSelected].bgColors[1];
+		} else {
+			bgColor2 = songs[curSelected].bgColors[0];
+		}
+		//bgColor = '0xFF' + bgColor;
+		return /*Std.parseInt(*/bgColor2/*)*/;
+	}
 }
 
 class SongMetadata
@@ -483,7 +539,7 @@ class SongMetadata
 	public var songName:String = "";
 	public var week:Int = 0;
 	public var songCharacter:String = "";
-	public var bgColors:Array<Int> = [0xFFFFFF];
+	public var bgColors:Array<Int> = [0xFFFFFFFF];
 
 	public function new(song:String, week:Int, songCharacter:String, bgColors:Array<Int>)
 	{
