@@ -32,6 +32,7 @@ class GameOverState extends FlxTransitionableState
 
 		var bf:Boyfriend = new Boyfriend(bfX, bfY);
 		// bf.scrollFactor.set();
+		bf.antialiasing = GamePrefs.antialiasing;
 		add(bf);
 		bf.playAnim('firstDeath');
 

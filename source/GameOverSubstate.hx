@@ -18,16 +18,20 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		var daStage = PlayState.curStage;
 		var daBf:String = '';
+		var daAntiAliasing:Bool;
 		switch (daStage)
 		{
 			case 'school':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
+				daAntiAliasing = false;
 			case 'schoolEvil':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
+				daAntiAliasing = false;
 			default:
 				daBf = 'bf';
+				daAntiAliasing = GamePrefs.antialiasing;
 		}
 
 		super();
@@ -35,6 +39,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.songPosition = 0;
 
 		bf = new Boyfriend(x, y, daBf);
+		bf.antialiasing = daAntiAliasing
 		add(bf);
 
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
