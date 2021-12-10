@@ -25,7 +25,7 @@ import Controls;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Graphics', 'Gameplay', 'Controls', 'Notes'];
+	var options:Array<String> = ['Graphics', 'Gameplay', 'Controls', 'Note Colors', 'Note Skin'];
 	var daValue:Bool = false;
 	var accept:Bool = false;
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -43,8 +43,8 @@ class OptionsState extends MusicBeatState
 			case 'Controls':
 				openSubState(new options.ControlsSubState());
 				
-			//case 'Notes':
-			//	openSubState(new options.NotesSubState());
+			case 'Note Colors':
+				openSubState(new options.NoteColorsSubState());
 				
 			default:
 				openSubState(new options.UnfinishedSubState());	
