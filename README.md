@@ -30,6 +30,7 @@ btw swordcube's writing the readme unless specified otherwise
 - Camera Zooms / If you have this disabled the camera won't zoom every few beats or every 8276347329128748329 nanoseconds in M.I.L.F on that one part.
 - Arrow Underlay / Puts a funny black background behind your arrows so you can SEE them. On certain backgrounds the arrows can blend in, so this may help.
 - Underlay Opacity / Change the opacity/transparency of the Funny arrow underlay
+- Make unlocking awards work / By doing shit in da game you can get da award
 
 ## Cube Engine Credits / Shoutouts
 - [swordcube (Me Lol)](https://twitter.com/swordcube) - Dumbass Programmer
