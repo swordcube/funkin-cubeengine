@@ -67,7 +67,7 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('pixelUI/noteskins/NOTE_assets'), true, 17, 17);
+				loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assets'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -76,7 +76,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('pixelUI/noteskins/NOTE_assetsENDS'), true, 7, 6);
+					loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assetsENDS'), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
