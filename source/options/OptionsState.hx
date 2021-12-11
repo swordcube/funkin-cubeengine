@@ -44,11 +44,13 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.ControlsSubState());
 				
 			case 'Note Colors':
-				#if debug
+				//#if debug
 				openSubState(new options.NoteColorsSubState());
-				#else
-				openSubState(new options.UnfinishedSubState());	
-				#end
+				//#else
+				//openSubState(new options.UnfinishedSubState());	
+				//#end
+				
+				//raf i still wanna test the note colors menu lol
 				
 			case 'Note Skin':
 				openSubState(new options.NoteSkinSubState());

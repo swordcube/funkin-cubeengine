@@ -42,7 +42,7 @@ class NoteSkinSubState extends MusicBeatSubstate
     override function create()
     {
         for (i in skinShit) {
-            if (i == null) {
+            if (i == 0) {
                 skinShit[i] = 0;
             }
         }
@@ -54,7 +54,7 @@ class NoteSkinSubState extends MusicBeatSubstate
         menuBG.antialiasing = GamePrefs.antialiasing;
         add(menuBG);
 
-        awwowsUwU = new FlxSprite().loadGraphic(Paths.image('awwows'));
+        awwowsUwU = new FlxSprite().loadGraphic(Paths.image('funnyUpDownArrows'));
 
         
         funnyNotes = new FlxTypedGroup<FlxSprite>();
