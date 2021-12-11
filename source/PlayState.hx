@@ -112,6 +112,7 @@ class PlayState extends MusicBeatState
 
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
+	private var enemyStrums:FlxTypedGroup<FlxSprite>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -174,7 +175,6 @@ class PlayState extends MusicBeatState
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
 	var timeTxt:FlxText;
-	var healthTxt:FlxText;
 	
 	//rating shit
 	public var accuracyNum:Float = 0;
@@ -828,6 +828,7 @@ class PlayState extends MusicBeatState
 		add(strumLineNotes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
+		enemyStrums = new FlxTypedGroup<FlxSprite>();
 
 		// startCountdown();
 
@@ -890,12 +891,6 @@ class PlayState extends MusicBeatState
 		scoreTxt.borderSize = 1.25;
 		add(scoreTxt);
 		
-		healthTxt = new FlxText(0, healthBarBG.y - 50, FlxG.width, "", 18);
-		healthTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		healthTxt.scrollFactor.set();
-		healthTxt.borderSize = 1.25;
-		add(healthTxt);
-		
 		botplayTxt = new FlxText(400, timeTxt.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
@@ -915,7 +910,6 @@ class PlayState extends MusicBeatState
 		scoreTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
-		healthTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -1321,7 +1315,7 @@ class PlayState extends MusicBeatState
 			switch (curStage)
 			{
 				case 'school' | 'schoolEvil':
-					babyArrow.loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assets'), true, 17, 17);
+					babyArrow.loadGraphic(Paths.image('noteskins/pixelUI/' + GamePrefs.noteShit[i][1] + '_assets'), true, 17, 17);
 					babyArrow.animation.add('green', [6]);
 					babyArrow.animation.add('red', [7]);
 					babyArrow.animation.add('blue', [5]);
@@ -1356,7 +1350,7 @@ class PlayState extends MusicBeatState
 					}
 
 				default:
-					babyArrow.frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
+					babyArrow.frames = Paths.getSparrowAtlas('noteskins/' + GamePrefs.noteShit[i][1] + '_assets');
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -1409,6 +1403,7 @@ class PlayState extends MusicBeatState
 				if (GamePrefs.middlescroll)
 					babyArrow.x = 10000000; //just making sure it is offscreen
 				babyArrow.alpha = GamePrefs.opponentArrowOpacity;
+				enemyStrums.add(babyArrow);
 			}
 
 			babyArrow.animation.play('static');
@@ -1632,13 +1627,7 @@ class PlayState extends MusicBeatState
 			if (botplay && spr.animation.curAnim.name == 'confirm' && spr.animation.curAnim.finished)
 			{
 				spr.animation.play('static');
-				
-				if (!curStage.startsWith('school'))
-				{
-					spr.centerOffsets();
-				}
-				else
-					spr.centerOffsets();
+				spr.centerOffsets();
 			}
 		});
 		
@@ -1661,12 +1650,10 @@ class PlayState extends MusicBeatState
 		accuracyText = Math.floor(accuracyNum * 100) / 100 + '%';
 			
 		if(rating == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Accuracy: 0%' + ' | Rating: N/A';
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health:' + healthBar.percent + '% | Accuracy: 0%' + ' | Rating: N/A';
 		} else{
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Accuracy: ' + accuracyText + ' | Rating: ' + rating + ' (' + rating2 + ')';
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health:' + healthBar.percent + '% | Accuracy: ' + accuracyText + ' | Rating: ' + rating + ' (' + rating2 + ')';
 		}
-
-		healthTxt.text = healthBar.percent + '%';
 		
 		if(botplay) {
 			botplaySine += 180 * elapsed;

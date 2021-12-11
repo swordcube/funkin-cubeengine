@@ -26,7 +26,7 @@ class Note extends FlxSprite
 
 	public var noteScore:Float = 1;
 
-	public static var swagWidth:Float = 160 * 0.7; //aka 112
+	public static var swagWidth:Float = 112;
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
@@ -67,7 +67,7 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assets'), true, 17, 17);
+				loadGraphic(Paths.image('noteskins/pixelUI/' + GamePrefs.noteShit[noteData][1] + '_assets'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -76,7 +76,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('noteskins/pixelUI/NOTE_assetsENDS'), true, 7, 6);
+					loadGraphic(Paths.image('noteskins/pixelUI/' + GamePrefs.noteShit[noteData][1] + '_assetsENDS'), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
@@ -93,7 +93,7 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
+				frames = Paths.getSparrowAtlas('noteskins/' + GamePrefs.noteShit[noteData][1] + '_assets');
 
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');

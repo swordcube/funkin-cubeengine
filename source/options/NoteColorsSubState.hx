@@ -181,14 +181,14 @@ class NoteColorsSubState extends MusicBeatSubstate
 			var item = funnyNotes.members[i];
 			item.x = (135 * i) + 375;
 			item.setGraphicSize(Std.int(item.width * 0.8));
-			item.color = FlxColor.fromHSB(GamePrefs.arrowHSV[i][0], GamePrefs.arrowHSV[i][1], GamePrefs.arrowHSV[i][2], 1);
+			item.color = FlxColor.fromHSB(GamePrefs.noteShit[i][0][0]/360, GamePrefs.noteShit[i][0][1]/100, (GamePrefs.noteShit[i][0][2]+100)/100, 1);
 		}
 		
 		comedyArrows.visible = false;
 		
-		colorTextNum1.changeText(GamePrefs.arrowHSV[curSelected][0]+"", 0);
-		colorTextNum2.changeText(GamePrefs.arrowHSV[curSelected][1]+"", 0);
-		colorTextNum3.changeText(GamePrefs.arrowHSV[curSelected][2]+"", 0);
+		colorTextNum1.changeText(GamePrefs.noteShit[curSelected][0][0]+"", 0);
+		colorTextNum2.changeText(GamePrefs.noteShit[curSelected][0][1]+"", 0);
+		colorTextNum3.changeText(GamePrefs.noteShit[curSelected][0][2]+100+"", 0);
 		
 		colorTextNum1.alpha = 1;
 		colorTextNum2.alpha = 1;
@@ -264,12 +264,21 @@ class NoteColorsSubState extends MusicBeatSubstate
 	
 	function changeHSV(change:Int)
 	{
-		GamePrefs.arrowHSV[curSelected][pissFard] += change;
+		GamePrefs.noteShit[curSelected][0][pissFard] += change;
 		
-		if(GamePrefs.arrowHSV[curSelected][pissFard] < -200)
-			GamePrefs.arrowHSV[curSelected][pissFard] = -200;
-			
-		if(GamePrefs.arrowHSV[curSelected][pissFard] > 200)
-			GamePrefs.arrowHSV[curSelected][pissFard] = 200;
+		if(GamePrefs.noteShit[curSelected][0][0] < 0)
+			GamePrefs.noteShit[curSelected][0][0] = 0;
+		if(GamePrefs.noteShit[curSelected][0][0] > 360)
+			GamePrefs.noteShit[curSelected][0][0] = 360;
+
+		if(GamePrefs.noteShit[curSelected][0][1] < 0)
+			GamePrefs.noteShit[curSelected][0][1] = 0;
+		if(GamePrefs.noteShit[curSelected][0][1] > 100)
+			GamePrefs.noteShit[curSelected][0][1] = 100;
+
+		if(GamePrefs.noteShit[curSelected][0][2] < -100)
+			GamePrefs.noteShit[curSelected][0][2] = -100;
+		if(GamePrefs.noteShit[curSelected][0][2] > 0)
+			GamePrefs.noteShit[curSelected][0][2] = 0;
 	}
 }
