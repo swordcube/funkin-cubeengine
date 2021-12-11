@@ -87,8 +87,6 @@ class NoteSkinSubState extends MusicBeatSubstate
             close();
             FlxG.sound.play(Paths.sound('cancelMenu'));
         }
-        if (controls.ACCEPT) {
-        }
 		if (controls.UI_UP_P) {
 			changeSkin(1);
 		}
@@ -112,9 +110,9 @@ class NoteSkinSubState extends MusicBeatSubstate
         for (i in 0...funnyNotes.length) {
 			var item = funnyNotes.members[i];
 			if (curSelected == i) {
-				item.y = FlxMath.lerp(item.y, 500, lerpVal);
+				item.y = FlxMath.lerp(item.y, 350, lerpVal);
 			} else {
-				item.y = FlxMath.lerp(item.y, 550, lerpVal);
+				item.y = FlxMath.lerp(item.y, 400, lerpVal);
 			}
 		}
 
