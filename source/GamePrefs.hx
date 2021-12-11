@@ -45,7 +45,7 @@ class GamePrefs
 	public static var arrowUnderlay:Bool = false; //Arrow Underlay
 	public static var underlayOpacity:Float = 0.7; //Underlay Opacity
 	public static var scrollSpeed:Float = 1; //Scroll Speed
-	public static var songTimeBar:Bool = false; //Song Time Bar
+	public static var songTimeBar:Bool = true; //Song Time Bar
 	
 	// -- OTHER SHITS --
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];

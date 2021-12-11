@@ -37,6 +37,7 @@ class NoteColorsSubState extends MusicBeatSubstate
 	private var colorTextNum1:Alphabet;
 	private var colorTextNum2:Alphabet;
 	private var colorTextNum3:Alphabet;
+	private var shaderArray:Array<ColorSwap> = [];
 	
 	private var noteSelectedInt = 0;
 	var stupidState:String = 'ChooseNote';
@@ -80,6 +81,13 @@ class NoteColorsSubState extends MusicBeatSubstate
 			note.antialiasing = GamePrefs.antialiasing;
 			note.screenCenter(Y);
 			funnyNotes.add(note);	
+			
+			var newShader:ColorSwap = new ColorSwap();
+			note.shader = newShader.shader;
+			newShader.hue = GamePrefs.arrowHSV[i][0] / 360;
+			newShader.saturation = GamePrefs.arrowHSV[i][1] / 100;
+			newShader.brightness = GamePrefs.arrowHSV[i][2] / 100;
+			shaderArray.push(newShader);
 		}
 		
 		descText = new FlxText(50, 600, 1180, "", 32);
@@ -266,10 +274,19 @@ class NoteColorsSubState extends MusicBeatSubstate
 	{
 		GamePrefs.arrowHSV[curSelected][pissFard] += change;
 		
-		if(GamePrefs.arrowHSV[curSelected][pissFard] < -200)
-			GamePrefs.arrowHSV[curSelected][pissFard] = -200;
+		if(pissFard == 2) {
+			if(GamePrefs.arrowHSV[curSelected][pissFard] < 0)
+				GamePrefs.arrowHSV[curSelected][pissFard] = 0;
+		} else {
+			if(GamePrefs.arrowHSV[curSelected][pissFard] < -360)
+				GamePrefs.arrowHSV[curSelected][pissFard] = -360;
+		}
 			
-		if(GamePrefs.arrowHSV[curSelected][pissFard] > 200)
-			GamePrefs.arrowHSV[curSelected][pissFard] = 200;
+		if(GamePrefs.arrowHSV[curSelected][pissFard] > 360)
+			GamePrefs.arrowHSV[curSelected][pissFard] = 360;
+			
+		shaderArray[curSelected].hue = GamePrefs.arrowHSV[curSelected][0] / 360;
+		shaderArray[curSelected].saturation = GamePrefs.arrowHSV[curSelected][1] / 100;
+		shaderArray[curSelected].brightness = GamePrefs.arrowHSV[curSelected][2] / 100;
 	}
 }

@@ -2023,7 +2023,11 @@ class PlayState extends MusicBeatState
 					notes.remove(daNote, true);
 					daNote.destroy();
 					
-					strumLineNotes.members[daNote.noteData].animation.play('confirm', true);
+					switch (Math.abs(daNote.noteData))
+					{
+						case 0 | 1 | 2 | 3:
+							strumLineNotes.members[daNote.noteData].animation.play('confirm', true);
+					}
 					
 					if (strumLineNotes.members[daNote.noteData].animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
 					{
@@ -2558,7 +2562,7 @@ class PlayState extends MusicBeatState
 		} else {
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.mustPress && daNote.y > strumLine.y && GamePrefs.downscroll || daNote.y < strumLine.y && !GamePrefs.downscroll)
+				if (daNote.canBeHit && daNote.mustPress && daNote.y > strumLine.y && GamePrefs.downscroll || daNote.y < strumLine.y && !GamePrefs.downscroll)
 				{
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -2586,6 +2590,18 @@ class PlayState extends MusicBeatState
 							}
 							else
 								spr.centerOffsets();
+								
+							switch (daNote.noteData)
+							{
+								case 0:
+									boyfriend.playAnim('singLEFT', true);
+								case 1:
+									boyfriend.playAnim('singDOWN', true);
+								case 2:
+									boyfriend.playAnim('singUP', true);
+								case 3:
+									boyfriend.playAnim('singRIGHT', true);
+							}
 						}
 					});
 				}
