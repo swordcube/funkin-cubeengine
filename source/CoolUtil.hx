@@ -23,6 +23,13 @@ class CoolUtil
 		['Hard', '-hard']
 	];
 
+	public static var noteskins:Array<String> = [
+        'NOTE',
+		'CIRCLE',
+		'SQUARE',
+		'TRIANGLE'
+	];
+
 	public static function difficultyString():String
 	{
 		return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();

@@ -195,7 +195,7 @@ class FreeplayState extends MusicBeatState
 		add(text);
 		
 		bg.color = songs[curSelected].bgColors[0];
-		if (songs[curSelected].bgColors[1] != 0) {
+		if (songs[curSelected].bgColors[1] != 0 && songs[curSelected].bgColors[1] != null) {
 			bg2.color = songs[curSelected].bgColors[1];
 		} else {
 			bg2.color = songs[curSelected].bgColors[0];

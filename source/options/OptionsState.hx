@@ -44,8 +44,15 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.ControlsSubState());
 				
 			case 'Note Colors':
+				#if debug
 				openSubState(new options.NoteColorsSubState());
+				#else
+				openSubState(new options.UnfinishedSubState());	
+				#end
 				
+			case 'Note Skin':
+				openSubState(new options.NoteSkinSubState());
+
 			default:
 				openSubState(new options.UnfinishedSubState());	
 		}

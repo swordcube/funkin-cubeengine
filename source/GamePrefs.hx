@@ -25,12 +25,6 @@ class GamePrefs
 	public static var optimization:Bool = false; //Optimization Mode
 	public static var toggleFPS:Bool = true; //Toggle FPS Counter
 	public static var noteSplashes:Bool = true; //Note Splashes
-	public static var noteShit:Array<Dynamic> = [  //Custom Note Shit
-		[[0, 0, 0], 'NOTE'], //left
-		[[0, 0, 0], 'NOTE'], //down
-		[[0, 0, 0], 'NOTE'], //up
-		[[0, 0, 0], 'NOTE']  //right
-	]; 
 	public static var cameraZooms:Bool = true; //Camera Zooms
 	public static var opponentArrowOpacity:Float = 1; //Opponent Arrow Opacity
 	
@@ -48,7 +42,12 @@ class GamePrefs
 	public static var songTimeBar:Bool = false; //Song Time Bar
 	
 	// -- OTHER SHITS --
-	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+	public static var noteShit:Array<Dynamic> = [  //Custom Note Shit
+		[[0, 0, 0], 'NOTE'], //left
+		[[0, 0, 0], 'NOTE'], //down
+		[[0, 0, 0], 'NOTE'], //up
+		[[0, 0, 0], 'NOTE']  //right
+	]; 
 	
 	// -- TESTING SHIT --
 	public static var checkboxTest:Bool = false;
@@ -125,10 +124,6 @@ class GamePrefs
 			noteSplashes = FlxG.save.data.noteSplashes;
 		}
 		
-		if(FlxG.save.data.noteShit != null) {
-			noteShit = FlxG.save.data.noteShit;
-		}
-		
 		if(FlxG.save.data.cameraZooms != null) {
 			cameraZooms = FlxG.save.data.cameraZooms;
 		}
@@ -188,18 +183,17 @@ class GamePrefs
 			opponentArrowOpacity = FlxG.save.data.opponentArrowOpacity;
 		}
 		
+		//other
+		if(FlxG.save.data.noteShit != null) {
+			noteShit = FlxG.save.data.noteShit;
+		}
+		
 		// load volume lol
 		if(FlxG.save.data.volume != null) {
 			FlxG.sound.volume = FlxG.save.data.volume;
 		}
 		if (FlxG.save.data.mute != null) {
 			FlxG.sound.muted = FlxG.save.data.mute;
-		}
-		
-		// arrow hsv shit
-		
-		if(FlxG.save.data.arrowHSV != null) {
-			arrowHSV = FlxG.save.data.arrowHSV;
 		}
 		
 		// load controls!!!!
@@ -222,7 +216,6 @@ class GamePrefs
 		FlxG.save.data.optimization = optimization;
 		FlxG.save.data.toggleFPS = toggleFPS;
 		FlxG.save.data.noteSplashes = noteSplashes;
-		FlxG.save.data.noteShit = noteShit;
 		FlxG.save.data.cameraZooms = cameraZooms;
 		//-- GAMEPLAY SHIT --
 		FlxG.save.data.toggleOutdatedWarning = toggleOutdatedWarning;
@@ -238,9 +231,8 @@ class GamePrefs
 		FlxG.save.data.songTimeBar = songTimeBar;
 		FlxG.save.data.opponentArrowOpacity = opponentArrowOpacity;
 		
-		// arrow hsv shit
-		FlxG.save.data.arrowHSV = arrowHSV;
-		
+		FlxG.save.data.noteShit = noteShit;
+
 		//save the shit!
 		FlxG.save.flush();
 		
