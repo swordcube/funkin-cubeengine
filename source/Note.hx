@@ -19,10 +19,12 @@ class Note extends FlxSprite
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
+	public var inEditor:Bool = false;
 	public var prevNote:Note;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
+	public var earlyHitMult:Float = 0.5;
 
 	public var noteScore:Float = 1;
 
@@ -190,6 +192,8 @@ class Note extends FlxSprite
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
 			}
+		} else if(!isSustainNote) {
+			earlyHitMult = 1;
 		}
 	}
 
@@ -199,8 +203,9 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
+			// ok river
 			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult))
 				canBeHit = true;
 			else
 				canBeHit = false;
@@ -216,7 +221,7 @@ class Note extends FlxSprite
 				wasGoodHit = true;
 		}
 
-		if (tooLate)
+		if (tooLate && !inEditor)
 		{
 			if (alpha > 0.3)
 				alpha = 0.3;

@@ -84,9 +84,9 @@ class NoteColorsSubState extends MusicBeatSubstate
 			
 			var newShader:ColorSwap = new ColorSwap();
 			note.shader = newShader.shader;
-			newShader.hue = GamePrefs.arrowHSV[i][0] / 360;
-			newShader.saturation = GamePrefs.arrowHSV[i][1] / 100;
-			newShader.brightness = GamePrefs.arrowHSV[i][2] / 100;
+			newShader.hue = GamePrefs.noteShit[i][0][0] / 360;
+			newShader.saturation = GamePrefs.noteShit[i][0][1] / 100;
+			newShader.brightness = GamePrefs.noteShit[i][0][2] / 100;
 			shaderArray.push(newShader);
 		}
 		
@@ -273,23 +273,11 @@ class NoteColorsSubState extends MusicBeatSubstate
 	function changeHSV(change:Int)
 	{
 		GamePrefs.noteShit[curSelected][0][pissFard] += change;
+			
+		shaderArray[curSelected].hue = GamePrefs.noteShit[curSelected][0][0] / 360;
+		shaderArray[curSelected].saturation = GamePrefs.noteShit[curSelected][0][1] / 100;
+		shaderArray[curSelected].brightness = GamePrefs.noteShit[curSelected][0][2] / 100;
 		
-<<<<<<< HEAD
-		if(pissFard == 2) {
-			if(GamePrefs.arrowHSV[curSelected][pissFard] < 0)
-				GamePrefs.arrowHSV[curSelected][pissFard] = 0;
-		} else {
-			if(GamePrefs.arrowHSV[curSelected][pissFard] < -360)
-				GamePrefs.arrowHSV[curSelected][pissFard] = -360;
-		}
-			
-		if(GamePrefs.arrowHSV[curSelected][pissFard] > 360)
-			GamePrefs.arrowHSV[curSelected][pissFard] = 360;
-			
-		shaderArray[curSelected].hue = GamePrefs.arrowHSV[curSelected][0] / 360;
-		shaderArray[curSelected].saturation = GamePrefs.arrowHSV[curSelected][1] / 100;
-		shaderArray[curSelected].brightness = GamePrefs.arrowHSV[curSelected][2] / 100;
-=======
 		if(GamePrefs.noteShit[curSelected][0][0] < 0)
 			GamePrefs.noteShit[curSelected][0][0] = 0;
 		if(GamePrefs.noteShit[curSelected][0][0] > 360)
@@ -304,6 +292,5 @@ class NoteColorsSubState extends MusicBeatSubstate
 			GamePrefs.noteShit[curSelected][0][2] = -100;
 		if(GamePrefs.noteShit[curSelected][0][2] > 0)
 			GamePrefs.noteShit[curSelected][0][2] = 0;
->>>>>>> 40cf8c5734928eb438588bcf7d2af2153f9522dd
 	}
 }

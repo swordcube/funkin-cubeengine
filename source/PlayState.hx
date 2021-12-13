@@ -1650,9 +1650,9 @@ class PlayState extends MusicBeatState
 		accuracyText = Math.floor(accuracyNum * 100) / 100 + '%';
 			
 		if(rating == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health:' + healthBar.percent + '% | Accuracy: 0%' + ' | Rating: N/A';
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health: ' + healthBar.percent + '% | Accuracy: 0%' + ' | Rating: N/A';
 		} else{
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health:' + healthBar.percent + '% | Accuracy: ' + accuracyText + ' | Rating: ' + rating + ' (' + rating2 + ')';
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Health: ' + healthBar.percent + '% | Accuracy: ' + accuracyText + ' | Rating: ' + rating + ' (' + rating2 + ')';
 		}
 		
 		if(botplay) {
@@ -2196,8 +2196,9 @@ class PlayState extends MusicBeatState
 		{
 			daRating = 'shit';
 			score = 50;
-			health -= 0.0475;
+			health -= 0.275;
 			songScore -= 10;
+			songMisses += 1;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.5)
 		{
@@ -2471,9 +2472,12 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					if(!GamePrefs.ghostTapping) badNoteCheck();
-					if(!GamePrefs.ghostTapping) ghostMisses += 1;
-					CalculateAccuracy();
+					if(!GamePrefs.ghostTapping)
+					{
+						badNoteCheck();
+						ghostMisses += 1;
+						CalculateAccuracy();
+					}
 				}
 			}
 
