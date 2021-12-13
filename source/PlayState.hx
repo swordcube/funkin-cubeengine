@@ -1251,6 +1251,16 @@ class PlayState extends MusicBeatState
 					oldNote = null;
 
 				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, isPlayer);
+				
+				var newShader:ColorSwap = new ColorSwap();
+				swagNote.shader = newShader.shader;
+				newShader.hue = GamePrefs.noteShit[daNoteData % 4][0][0] / 360;
+				newShader.saturation = GamePrefs.noteShit[daNoteData % 4][0][1] / 100;
+				newShader.brightness = GamePrefs.noteShit[daNoteData % 4][0][2] / 100;
+				shaderArray3.push(newShader);
+				//dunno if i'll need this shader shit later on but eh
+				//better to have it just in case idk jbhrfdsksbfhdshk
+				
 				swagNote.sustainLength = songNotes[2];
 				swagNote.scrollFactor.set(0, 0);
 
@@ -1266,6 +1276,16 @@ class PlayState extends MusicBeatState
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
 						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false, isPlayer);
+						
+						var newShader:ColorSwap = new ColorSwap();
+						sustainNote.shader = newShader.shader;
+						newShader.hue = GamePrefs.noteShit[daNoteData % 4][0][0] / 360;
+						newShader.saturation = GamePrefs.noteShit[daNoteData % 4][0][1] / 100;
+						newShader.brightness = GamePrefs.noteShit[daNoteData % 4][0][2] / 100;
+						shaderArray4.push(newShader);
+						//dunno if i'll need this shader shit later on but eh
+						//better to have it just in case idk jbhrfdsksbfhdshk
+				
 						sustainNote.scrollFactor.set();
 						unspawnNotes.push(sustainNote);
 
@@ -1302,6 +1322,10 @@ class PlayState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
+	public var shaderArray:Array<ColorSwap> = [];
+	public var shaderArray2:Array<ColorSwap> = [];
+	public var shaderArray3:Array<ColorSwap> = [];
+	public var shaderArray4:Array<ColorSwap> = [];
 	private function generateStaticArrows(player:Int):Void
 	{
 		for (i in 0...4)
@@ -1409,6 +1433,13 @@ class PlayState extends MusicBeatState
 			babyArrow.animation.play('static');
 			babyArrow.x += 50;
 			babyArrow.x += ((FlxG.width / 2) * player);
+			
+			var newShader:ColorSwap = new ColorSwap();
+			babyArrow.shader = newShader.shader;
+			newShader.hue = 0;
+			newShader.saturation = 0;
+			newShader.brightness = 0;
+			shaderArray.push(newShader);
 
 			strumLineNotes.add(babyArrow);
 		}
@@ -1630,6 +1661,21 @@ class PlayState extends MusicBeatState
 				spr.centerOffsets();
 			}
 		});
+		
+		// stupid note color shit idk
+		for (i in 0...strumLineNotes.members.length)
+		{
+			if (strumLineNotes.members[i].animation.curAnim.name == 'pressed' || strumLineNotes.members[i].animation.curAnim.name == 'confirm')
+			{
+				shaderArray[i].hue = GamePrefs.noteShit[i % 4][0][0] / 360;
+				shaderArray[i].saturation = GamePrefs.noteShit[i % 4][0][1] / 100;
+				shaderArray[i].brightness = GamePrefs.noteShit[i % 4][0][2] / 100;
+			} else {
+				shaderArray[i].hue = 0;
+				shaderArray[i].saturation = 0;
+				shaderArray[i].brightness = 0;	
+			}
+		}
 		
 		if (generatedMusic)
 		{
@@ -2219,6 +2265,14 @@ class PlayState extends MusicBeatState
 		if(daRating == 'sick' && GamePrefs.noteSplashes)
 		{
 			var funniSplash:NoteSplash = new NoteSplash(strumLineNotes.members[(note.noteData % 4) + 4].x, strumLineNotes.members[(note.noteData % 4) + 4].y, note.noteData % 4);
+			
+			var newShader:ColorSwap = new ColorSwap();
+			funniSplash.shader = newShader.shader;
+			newShader.hue = GamePrefs.noteShit[note.noteData % 4][0][0] / 360;
+			newShader.saturation = GamePrefs.noteShit[note.noteData % 4][0][1] / 100;
+			newShader.brightness = GamePrefs.noteShit[note.noteData % 4][0][2] / 100;
+			shaderArray2.push(newShader);
+			
 			funniSplash.cameras = [camHUD];
 			add(funniSplash);
 		}

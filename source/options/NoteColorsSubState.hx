@@ -196,7 +196,7 @@ class NoteColorsSubState extends MusicBeatSubstate
 		
 		colorTextNum1.changeText(GamePrefs.noteShit[curSelected][0][0]+"", 0);
 		colorTextNum2.changeText(GamePrefs.noteShit[curSelected][0][1]+"", 0);
-		colorTextNum3.changeText(GamePrefs.noteShit[curSelected][0][2]+100+"", 0);
+		colorTextNum3.changeText(GamePrefs.noteShit[curSelected][0][2]/*+100*/+"", 0);
 		
 		colorTextNum1.alpha = 1;
 		colorTextNum2.alpha = 1;
@@ -278,19 +278,19 @@ class NoteColorsSubState extends MusicBeatSubstate
 		shaderArray[curSelected].saturation = GamePrefs.noteShit[curSelected][0][1] / 100;
 		shaderArray[curSelected].brightness = GamePrefs.noteShit[curSelected][0][2] / 100;
 		
-		if(GamePrefs.noteShit[curSelected][0][0] < 0)
-			GamePrefs.noteShit[curSelected][0][0] = 0;
+		if(GamePrefs.noteShit[curSelected][0][0] < -360)
+			GamePrefs.noteShit[curSelected][0][0] = -360;
 		if(GamePrefs.noteShit[curSelected][0][0] > 360)
 			GamePrefs.noteShit[curSelected][0][0] = 360;
 
-		if(GamePrefs.noteShit[curSelected][0][1] < 0)
-			GamePrefs.noteShit[curSelected][0][1] = 0;
+		if(GamePrefs.noteShit[curSelected][0][1] < -100)
+			GamePrefs.noteShit[curSelected][0][1] = -100;
 		if(GamePrefs.noteShit[curSelected][0][1] > 100)
 			GamePrefs.noteShit[curSelected][0][1] = 100;
 
 		if(GamePrefs.noteShit[curSelected][0][2] < -100)
 			GamePrefs.noteShit[curSelected][0][2] = -100;
-		if(GamePrefs.noteShit[curSelected][0][2] > 0)
-			GamePrefs.noteShit[curSelected][0][2] = 0;
+		if(GamePrefs.noteShit[curSelected][0][2] > 360)
+			GamePrefs.noteShit[curSelected][0][2] = 360;
 	}
 }
