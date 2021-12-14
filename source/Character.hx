@@ -433,7 +433,7 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 				flipX = true;
-				barColor = 0xFF31b0d1;
+				barColor = 0xFF7bd6f6;
 				
 			case 'bf-pixel-dead':
 				frames = Paths.getSparrowAtlas('weeb/bfPixelsDEAD');
@@ -452,7 +452,7 @@ class Character extends FlxSprite
 				updateHitbox();
 				antialiasing = false;
 				flipX = true;
-				barColor = 0xFF31b0d1;
+				barColor = 0xFF7bd6f6;
 
 			case 'senpai':
 				frames = Paths.getSparrowAtlas('weeb/senpai');
