@@ -161,16 +161,16 @@ class PauseSubState extends MusicBeatSubstate
 					botplayText.visible = PlayState.botplay;
 					
 				case "Exit to menu":
-				
-				switch (PlayState.menuStartedFrom) // go back to the menu you came from when you started a song
-				{
-					case "StoryMode":
-						FlxG.switchState(new StoryMenuState());
-					case "Freeplay":
-						FlxG.switchState(new FreeplayState());
-					case "MainMenu":
-						FlxG.switchState(new MainMenuState());
-				}
+					PlayState.deathCounter = 0;
+					switch (PlayState.menuStartedFrom) // go back to the menu you came from when you started a song
+					{
+						case "StoryMode":
+							FlxG.switchState(new StoryMenuState());
+						case "Freeplay":
+							FlxG.switchState(new FreeplayState());
+						case "MainMenu":
+							FlxG.switchState(new MainMenuState());
+					}
 			}
 		}
 
