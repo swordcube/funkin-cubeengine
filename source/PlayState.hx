@@ -2155,6 +2155,7 @@ class PlayState extends MusicBeatState
 
 				if (storyPlaylist.length <= 0)
 				{
+					deathCounter = 0;
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
 					transIn = FlxTransitionableState.defaultTransIn;
@@ -2214,6 +2215,7 @@ class PlayState extends MusicBeatState
 			{
 				trace('WENT BACK TO FREEPLAY??');
 				FlxG.switchState(new FreeplayState());
+				deathCounter = 0;
 			}
 		//}
 	}
