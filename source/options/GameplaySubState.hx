@@ -46,7 +46,8 @@ class GameplaySubState extends MusicBeatSubstate
 		['Ghost Tapping', "When disabled, Pressing a note that isn't there will result\nin a miss."],
 		['Downscroll', "Moves the notes down to the bottom of the screen.\nEnabling this is up to your preference."],
 		['Middlescroll', "Moves the notes to the the middle of the screen.\nEnabling this is up to your preference."],
-		['Hit Sounds', "When enabled, a sound will play when you hit a note."],
+		//['Hit Sounds', "When enabled, a sound will play when you hit a note."],
+		['Hit Sound', "When changed to anything other than \"None\"\nA sound will play when you hit a note.\nEach sound is different."],
 		['Song Time Bar', "When enabled, a bar at the top or bottom of the screen\nwill show with the time left of the current song."],
 		['Framerate', "Changes how fast or slow the game itself runs."],
 		['Note Offset', "Changes how early or late your notes appear."],
@@ -65,6 +66,7 @@ class GameplaySubState extends MusicBeatSubstate
 		'Underlay Opacity',
 		'Scroll Speed',
 		'Framerate',
+		'Hit Sound',
 		'Note Offset',
 		'Opponent Arrow Opacity',
 	];
@@ -236,6 +238,11 @@ class GameplaySubState extends MusicBeatSubstate
 							FlxG.drawFramerate = GamePrefs.framerate;
 							FlxG.updateFramerate = GamePrefs.framerate;
 						}
+					
+					case 'Hit Sound':
+						GamePrefs.selectedHitsound += add;
+						if(GamePrefs.selectedHitsound < 0) GamePrefs.selectedHitsound = 0;
+						if(GamePrefs.selectedHitsound > GamePrefs.selectableHitsounds.length - 1) GamePrefs.selectedHitsound = GamePrefs.selectableHitsounds.length - 1;
 						
 					case 'Underlay Opacity':
 						GamePrefs.underlayOpacity += add/20;
@@ -370,6 +377,9 @@ class GameplaySubState extends MusicBeatSubstate
 				{
 					case 'Framerate':
 						daText = GamePrefs.framerate+"";
+						
+					case 'Hit Sound':
+						daText = GamePrefs.selectableHitsounds[GamePrefs.selectedHitsound][1]+"";
 						
 					case 'Underlay Opacity':
 						daText = FlxMath.roundDecimal(GamePrefs.underlayOpacity, 2)+"";

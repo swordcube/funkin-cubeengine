@@ -159,6 +159,11 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.botplay = !PlayState.botplay;
 					PlayState.usedBotplay = true; // makes it so if you've toggled botplay, your score won't submit
 					botplayText.visible = PlayState.botplay;
+					if(PlayState.botplay) {
+						GamePrefs.noteOffset = 35;
+					} else {
+						GamePrefs.noteOffset = PlayState.oldNoteOffset;
+					}
 					
 				case "Exit to menu":
 					PlayState.deathCounter = 0;

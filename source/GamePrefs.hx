@@ -33,7 +33,18 @@ class GamePrefs
 	public static var ghostTapping:Bool = true; //Ghost Tapping
 	public static var downscroll:Bool = false; //Downscroll
 	public static var middlescroll:Bool = false; //Middlescroll
-	public static var hitSounds:Bool = false; //Hit Sounds
+	public static var hitSounds:Bool = false; //Hit Sounds but legacy
+	
+	public static var selectedHitsound:Int = 0; //Hit Sound but like you can change it :hue:
+	
+	public static var selectableHitsounds:Array<Dynamic> = [ // Selectable Hitsounds
+		// Format: File Name, Display Name
+		['None', 'None'],
+		['osu!', 'osu!'],
+		['Tap', 'Tap'],
+		['VineBoom', 'Vine Boom'],
+	];
+	
 	public static var framerate:Int = 60; //Framerate
 	public static var noteOffset:Float = 0; //Note Offset
 	public static var arrowUnderlay:Bool = false; //Arrow Underlay
@@ -187,6 +198,9 @@ class GamePrefs
 		if(FlxG.save.data.noteShit != null) {
 			noteShit = FlxG.save.data.noteShit;
 		}
+		if(FlxG.save.data.selectedHitsound != null) {
+			selectedHitsound = FlxG.save.data.selectedHitsound;
+		}
 		
 		// load volume lol
 		if(FlxG.save.data.volume != null) {
@@ -232,6 +246,7 @@ class GamePrefs
 		FlxG.save.data.opponentArrowOpacity = opponentArrowOpacity;
 		
 		FlxG.save.data.noteShit = noteShit;
+		FlxG.save.data.selectedHitsound = selectedHitsound;
 
 		//save the shit!
 		FlxG.save.flush();

@@ -187,6 +187,7 @@ class PlayState extends MusicBeatState
 	public static var campaignScore:Int = 0;
 
 	public var defaultCamZoom:Float = 1.05;
+	public static var oldNoteOffset:Float = 0;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -204,6 +205,8 @@ class PlayState extends MusicBeatState
 	{
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
+			
+		oldNoteOffset = GamePrefs.noteOffset;
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -2246,11 +2249,11 @@ class PlayState extends MusicBeatState
 			score = 50;
 			health -= 0.275;
 			songScore -= 10;
-			songMisses += 1;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.5)
 		{
 			daRating = 'bad';
+			health -= 0.175;
 			score = 100;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.25)
@@ -2621,6 +2624,9 @@ class PlayState extends MusicBeatState
 					{
 						popUpScore(daNote.strumTime, daNote);
 						combo += 1;
+						hitSoundShit();
+						//CalculateAccuracy();
+						//for people who wanna make botplay act like you're really good lmao
 					}
 					
 					playerStrums.forEach(function(spr:FlxSprite)
@@ -2729,6 +2735,19 @@ class PlayState extends MusicBeatState
 			//badNoteCheck();
 		}
 	}
+	
+	function hitSoundShit()
+	{
+		var hitSoundLol:String = GamePrefs.selectableHitsounds[GamePrefs.selectedHitsound][0];
+		//if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
+		if(hitSoundLol != 'None') FlxG.sound.play(Paths.sound('hitsounds/' + hitSoundLol));
+		
+		if(hitSoundLol == 'VineBoom')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		} // this kind of just makes sense imo
+	}
 
 	function goodNoteHit(note:Note):Void
 	{
@@ -2738,7 +2757,7 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime, note);
 				combo += 1;
-				if(GamePrefs.hitSounds) FlxG.sound.play(Paths.sound('Hitsound'));
+				hitSoundShit();
 			}
 
 			if (note.noteData >= 0)
