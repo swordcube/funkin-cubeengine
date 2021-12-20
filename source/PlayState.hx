@@ -123,10 +123,11 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	public var healthBar:FlxBar;
-	var songPercent:Float = 0;
 
-	private var timeBarBG:AttachedSprite;
-	public var timeBar:FlxBar;
+	private var timeBarBG:FlxSprite;
+	private var timeBar:FlxBar;
+
+	var songPercent:Float = 0;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -893,6 +894,25 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		add(scoreTxt);
+
+		timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('healthBar'));
+		timeBarBG.screenCenter(X);
+		timeBarBG.scrollFactor.set();
+		timeBarBG.pixelPerfectPosition = true;
+		
+		if(FlxG.save.data.downscroll)
+			timeBarBG.y = FlxG.height - (timeBarBG.height + 1);
+		else
+			timeBarBG.y = 1;
+		
+		add(timeBarBG);
+		
+		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
+			'time', 0, FlxG.sound.music.length);
+		timeBar.scrollFactor.set();
+		timeBar.createFilledBar(FlxColor.BLACK, FlxColor.CYAN);
+		timeBar.pixelPerfectPosition = true;
+		add(timeBar);
 		
 		botplayTxt = new FlxText(400, timeTxt.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -914,6 +934,9 @@ class PlayState extends MusicBeatState
 		botplayTxt.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+
+		timeBar.cameras = [camHUD];
+		timeBarBG.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1609,6 +1632,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	var time:Float = 0.0;
+
 	override public function update(elapsed:Float)
 	{
 		#if !debug
@@ -1655,6 +1680,11 @@ class PlayState extends MusicBeatState
 					strumLineNotes.members[i].centerOffsets();
 			}
 		}
+
+		if(!endingSong)
+			time = FlxG.sound.music.time;
+		else
+			time = FlxG.sound.music.length;
 		
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
