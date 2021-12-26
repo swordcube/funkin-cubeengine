@@ -30,6 +30,7 @@ class Awards
 		false,
 		false,
 		false,
+		false,
 	];
 	
 	// -- THE SHIT --
@@ -57,6 +58,7 @@ class Awards
 		["Toaster PC", 	"Please...\nPlease just get a new PC...", 			"toasterGeneric", 	"Toaster", 			"/misc/toaster", 	false, 0xFFb2b4b8],
 		#end
 		["One small issue...", 			"127.0.0.1\ni have ur ip adress be scared", 				"IPAddress", 		"IPAddress", 		"/misc", 			true, 0xFFeb9e34],
+		["Insane Speed", 			"Your fingers must be crazy fast.\n[Get 25 NPS in a song]", 				"IPAddress", 		"IPAddress", 		"/misc", 			true, 0xFFeb9e34],
 	];
 
 	public static function loadAwards()
